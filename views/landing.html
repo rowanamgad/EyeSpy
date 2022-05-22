@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            font-family: Helvetica, sans-serif;
+        }
+
+        /* Split the screen in half */
+        .split {
+            height: 100%;
+            width: 50%;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            overflow-x: hidden;
+            padding-top: 20px;
+        }
+
+        /* Control the left side */
+        .left {
+            left: 0;
+            background-color: #3ba1c5;
+        }
+
+        /* Control the right side */
+        .right {
+            right: 0;
+            background-color: #f6da5c;
+        }
+
+        /* If you want the content centered horizontally and vertically */
+        .centered {
+            position: absolute;
+            /* top: 50%; */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .centered2 {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        /* Style the image inside the centered container, if needed */
+        .centered img {
+            /* width: 150px; */
+            border-radius: 50%;
+        }
+
+        .popupl {
+            position: absolute;
+            width: 700px;
+            height: 450px;
+            /* background: #fac6f6; */
+            background: #ffffff;
+            left: 2.5vw;
+            top: 23vh;
+            border-radius: 20px;
+            transform: scale(0.1);
+            transition: transform 0.5s;
+            visibility: hidden;
+        }
+
+        .popupr {
+            position: absolute;
+            width: 700px;
+            height: 450px;
+            /* background: #6acffc; */
+            background: #ffffff;
+            left: 2.5vw;
+            top: 23vh;
+            border-radius: 20px;
+            padding-right: 10px;
+            transform: scale(0.1);
+            transition: transform 0.5s;
+            visibility: hidden;
+        }
+
+        .open-popup {
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        li {
+            font-size: 1.3rem;
+            margin-bottom: 0.7em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="split left">
+        <!--memory side-->
+
+
+        <div>
+            <h1 class="centered2" style="color: #ffffff; font-size: 3rem; white-space: nowrap;">Memory Game</h1>
+            <img src="memoryGIF.gif" style="position:absolute; width: 700px; height: 324px; top: 25vh; left: 2.5vw">
+            <button
+                style="background-color: white; position:absolute; top: 75vh;left: 18vw; width: 200px; height: 70px; font-size: 2rem; border-radius: 30px;"
+                onclick="openPopupl()">Start!</button>
+
+            <div class="popupl" id="left">
+                <h2 style="text-align: center;"> How to play</h2>
+                <br>
+                <ul>
+                    <li>The objective is to find all pairs of cards in one minute.</li>
+                    <li>To flip a card, look directly at it.</li>
+                    <li>When 2 pairs of cards match, they remain facing up.</li>
+                    <li>When 2 pairs of cards don't match, they flip back again to be facing down.</li>
+                    <li><span style="color: red;">Hint: </span>The trick is to remember which cards are where. </li>
+                </ul>
+                <button
+                    style="position: absolute; top: 50vh; left: 7vw; width: 150px; height: 50px; font-size: 1.5rem; background: red; font-weight: 700; "
+                    onclick="closePopupl()">Cancel</button>
+
+                <form method="GET" action="memory">
+                    <input type="submit" value="Start!"
+                        style="position: absolute; top: 50vh; left: 28vw; width: 150px; height: 50px; font-size: 1.5rem; background: #0BDA51; font-weight: 700;" />
+                </form>
+            </div>
+        </div>
+        <!-- <div>
+            <h1 class="centered" style="color: #ffffff;"> Memory Game</h1>
+            <img src="memoryGIF.gif" style="position:absolute; width: 400px; height: 185px; top:13vh; left: 25%;">
+            <h1 style="color: #042065; top: 40vh; position: absolute; left: 1vh;">How to play:</h1>
+            <h2 style="color: #042065; position: absolute; top: 47vh; left: 3vh;">● The objective is to find all
+                pairs of cards in one minute.</h2>
+            <h2 style="color: #042065; position: absolute; top: 52vh; left: 3vh;">● To flip a card, look directly at it.
+            </h2>
+            <h2 style="color: #042065; position: absolute; top: 57vh; left: 3vh;">● When 2 pairs of cards match, they
+                remain facing up.</h2>
+            <h2 style="color: #042065; position: absolute; top: 62vh; left: 3vh;">● When 2 pairs of cards don't match,
+                they flip back again to be facing down.</h2>
+            <h2 style="color: #042065; position: absolute; top: 67vh; left: 3vh;">●</h2>
+            <h2 style="color: #a3447b; position: absolute; top: 67vh; left: 6vh;">Hint: The trick is to remember which
+                cards are where.</h2>
+        </div>
+    </div> -->
+
+        <div class="split right">
+            <!--match the shapes side-->
+            <div>
+                <h1 class="centered2" style="color: #ffffff; font-size: 3rem; white-space: nowrap;">Match the shapes
+                </h1>
+                <img src="matchGIF.gif" style="position:absolute; width: 700px; height: 324px; top: 25vh; left: 2.5vw">
+                <button
+                    style="background-color: white; position:absolute; top: 75vh;left: 18vw; width: 200px; height: 70px; font-size: 2rem; border-radius: 30px;"
+                    onclick="openPopupr()">Start!</button>
+
+                <div class="popupr" id="right">
+                    <h2 style="text-align: center;"> How to play</h2>
+                    <br>
+                    <ul>
+                        <li>The objective is to match each shape in the upper row with the one that corresponds to it in
+                            the lower row within one minute.</li>
+                        <li>To select a shape, look directly at it.</li>
+                        <li>When 2 selected shapes match, they remain selected with a green box surrounding them.</li>
+                        <li><span style="color: red;">Hint: </span>Each shape in the upper row has only one shape that
+                            corresponds to it in the lower row and vice versa. </li>
+                    </ul>
+                    <button
+                        style="position: absolute; top: 50vh; left: 7vw; width: 150px; height: 50px; font-size: 1.5rem; background: red; font-weight: 700; "
+                        onclick="closePopupr()">Cancel</button>
+
+
+                    <form method="GET" action="match">
+                        <input type="submit" value="Start!"
+                            style="position: absolute; top: 50vh; left: 29vw; width: 150px; height: 50px; font-size: 1.5rem; background: #0BDA51; font-weight: 700;" />
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <script>
+            var leftPopup = document.getElementById("left");
+            var rightPopup = document.getElementById("right");
+
+            function openPopupl() {
+                leftPopup.classList.add("open-popup");
+            }
+
+            function openPopupr() {
+                rightPopup.classList.add("open-popup");
+            }
+
+            function closePopupl() {
+                leftPopup.classList.remove("open-popup");
+            }
+
+            function closePopupr() {
+                rightPopup.classList.remove("open-popup");
+            }
+
+
+        </script>
+
+</body>
+
+</html>

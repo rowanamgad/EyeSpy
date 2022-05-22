@@ -1,0 +1,767 @@
+<!DOCTYPE html> <!-- To tell the browser this file is written in modern HTML-->
+<html lang="en">
+
+<head>
+    <title>Match</title>
+    <!-- <meta http-equiv = "refresh" content = "4; url = game1.html" /> -->
+    <!-- <link rel="stylesheet" href="memory2.css" /> -->
+
+    <script src="https://api.gazerecorder.com/GazeCloudAPI.js"></script>
+
+    <style>
+        img {
+            border: 5px solid rgba(0, 0, 0, 0);
+        }
+
+        .chosen {
+            border: 5px solid #8a7025;
+        }
+
+        .selected {
+            border: 5px solid #2a9c92;
+        }
+
+        .wrong {
+            border: 5px solid #FF0000;
+        }
+
+        .popup {
+            position: absolute;
+            width: 600px;
+            height: 200px;
+            /* background: #fac6f6; */
+            background: #ffffff;
+            left: 27vw;
+            top: 15vh;
+            border-radius: 20px;
+            transform: scale(0.1);
+            transition: transform 0.5s;
+            visibility: hidden;
+        }
+
+        .open-popup {
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        .circle-wrap {
+            /* margin: 150px auto; */
+            width: 120px;
+            height: 120px;
+            /* background: #fefcff; */
+            border-radius: 50%;
+            /* border: 1px solid #cdcbd0; */
+            z-index: 9999;
+            position: absolute;
+            /* left: 70px;
+            top: 100px; */
+
+        }
+
+        .circle-wrap .circle .mask,
+        .circle-wrap .circle .fill {
+            width: 120px;
+            height: 120px;
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        .mask .fill {
+            clip: rect(0px, 60px, 120px, 0px);
+            /* background-color: #4CBB17; */
+            background-color: #ffffff;
+        }
+
+        .circle-wrap .circle .mask {
+            clip: rect(0px, 120px, 120px, 60px);
+        }
+
+        .mask.full,
+        .circle .fill {
+            /* animation: fill ease-in-out 700ms; */
+            transform: rotate(180deg);
+        }
+
+        @keyframes fill {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(180deg);
+            }
+        }
+    </style>
+
+</head>
+
+<body style="overflow-y:hidden; overflow-x:hidden; background: linear-gradient(90deg, #FDBB2D 0%, #22C1C3 100%);">
+    <div id="shape1">
+        <img id="1" src="cube.png" name="square"
+            style="position: absolute; left: 20px; top: 10px; width: 270px; height: 340px;">
+        <div class="circle-wrap" style="position: absolute; left:95px; top:120px;">
+            <div class="circle">
+                <div class="mask full" id="leftHalf1" style="visibility: hidden;">
+                    <div class="fill" id="fillLeft1"></div>
+                </div>
+                <div class="mask half" id="rightHalf1" style="visibility: hidden;">
+                    <div class="fill" id="fillRight1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="shape2">
+        <img id="2" src="circle.png" name="circle"
+            style="position: absolute; left: 340px; top: 10px; width: 270px; height: 340px;;">
+
+        <div class="circle-wrap" style="position: absolute; left:415px; top:120px;">
+            <div class="circle">
+                <div class="mask full" id="leftHalf2" style="visibility: hidden;">
+                    <div class="fill" id="fillLeft2"></div>
+                </div>
+                <div class="mask half" id="rightHalf2" style="visibility: hidden;">
+                    <div class="fill" id="fillRight2"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="shape3">
+        <img id="3" src="domino.png" name="rec"
+            style="position: absolute; left: 660px; top: 10px; width: 270px; height: 340px;">
+
+        <div class="circle-wrap" style="position: absolute; left:735px; top:120px;">
+            <div class="circle">
+                <div class="mask full" id="leftHalf3" style="visibility: hidden;">
+                    <div class="fill" id="fillLeft3"></div>
+                </div>
+                <div class="mask half" id="rightHalf3" style="visibility: hidden;">
+                    <div class="fill" id="fillRight3"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="shape4">
+        <img id="4" src="triangle.png" name="triangle"
+            style="position: absolute; left: 980px; top: 10px; width: 270px; height: 340px;">
+
+        <div class="circle-wrap" style="position: absolute; left:1055px; top:120px;">
+            <div class="circle">
+                <div class="mask full" id="leftHalf4" style="visibility: hidden;">
+                    <div class="fill" id="fillLeft4"></div>
+                </div>
+                <div class="mask half" id="rightHalf4" style="visibility: hidden;">
+                    <div class="fill" id="fillRight4"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div id="shape5">
+        <img id="5" src="globe.png" name="circle"
+            style="position: absolute; left: 20px; bottom: 10px; width: 270px; height: 340px;">
+
+        <div class="circle-wrap" style="position: absolute; left:95px; bottom:120px;">
+            <div class="circle">
+                <div class="mask full" id="leftHalf5" style="visibility: hidden;">
+                    <div class="fill" id="fillLeft5"></div>
+                </div>
+                <div class="mask half" id="rightHalf5" style="visibility: hidden;">
+                    <div class="fill" id="fillRight5"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div id="shape6">
+        <img id="6" src="rectangle.png" name="rec"
+            style="position: absolute; left: 340px; bottom: 10px; width: 270px; height: 340px;">
+
+        <div class="circle-wrap" style="position: absolute; left:415px; bottom:120px;">
+            <div class="circle">
+                <div class="mask full" id="leftHalf6" style="visibility: hidden;">
+                    <div class="fill" id="fillLeft6"></div>
+                </div>
+                <div class="mask half" id="rightHalf6" style="visibility: hidden;">
+                    <div class="fill" id="fillRight6"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div id="shape7">
+        <img id="7" src="square.png" name="square"
+            style="position: absolute; left: 660px; bottom: 10px; width: 270px; height: 340px;">
+
+        <div class="circle-wrap" style="position: absolute; left:735px; bottom:120px;">
+            <div class="circle">
+                <div class="mask full" id="leftHalf7" style="visibility: hidden;">
+                    <div class="fill" id="fillLeft7"></div>
+                </div>
+                <div class="mask half" id="rightHalf7" style="visibility: hidden;">
+                    <div class="fill" id="fillRight7"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="shape8">
+        <img id="8" src="tree.png" name="triangle"
+            style="position: absolute; left: 980px; bottom: 10px; width: 270px; height: 340px;">
+
+        <div class="circle-wrap" style="position: absolute; left:1055px; bottom:120px;">
+            <div class="circle">
+                <div class="mask full" id="leftHalf8" style="visibility: hidden;">
+                    <div class="fill" id="fillLeft8"></div>
+                </div>
+                <div class="mask half" id="rightHalf8" style="visibility: hidden;">
+                    <div class="fill" id="fillRight8"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h1 style="position: absolute; left: 1310px; top: 30px; color: #fcbb2e; font-size: 2.3rem;">Time Left:</h1>
+    <h1 id="timer" style="position: absolute; left: 1375px; top: 80px; color: #fcbb2e; font-size: 2.3rem;">60</h1>
+
+    <div class="popup" id="losePopup">
+        <h1 style="text-align: center; color: #000; top: -3vh; position: relative;">Time's Up &#x1F615;</h1>
+
+        <form method="GET" action="home">
+            <input type="submit" value="Exit"
+                style="position: absolute; top: 13vh; left: 3vw; width: 150px; height: 50px; font-size: 1.5rem; background: red; font-weight: 700; " />
+        </form>
+        <p style="text-align: center; position: relative; top:9vh; color: #000; ">Use your mouse cursor instead of your
+            eye cursor to click on the buttons</p>
+
+        <form method="GET" action="match">
+            <input type="submit" value="Try Again!"
+                style="position: absolute; top: 13vh; left: 26vw; width: 150px; height: 50px; font-size: 1.5rem; background: #0BDA51; font-weight: 700;" />
+        </form>
+
+
+    </div>
+
+
+    <div class="popup" id="winPopup">
+        <h1 style="text-align: center; color: #000; top: -3vh; position: relative;">YOU WON &#128516;</h1>
+
+        <form method="GET" action="home">
+            <input type="submit" value="Exit"
+                style="position: absolute; top: 13vh; left: 3vw; width: 150px; height: 50px; font-size: 1.5rem; background: red; font-weight: 700; " />
+        </form>
+        <p style="text-align: center; position: relative; top:9vh; color: #000; ">Use your mouse cursor instead of your
+            eye cursor to click on the buttons</p>
+
+        <form method="GET" action="match">
+            <input type="submit" value="Play Again!"
+                style="position: absolute; top: 13vh; left: 26vw; width: 150px; height: 50px; font-size: 1.5rem; background: #0BDA51; font-weight: 700;" />
+        </form>
+
+
+    </div>
+
+    <div id="gaze"
+        style='position: absolute;display:none;width: 100px;height: 100px;border-radius: 50%;border: solid 2px  rgba(255, 255,255, .2);	box-shadow: 0 0 100px 3px rgba(125, 125,125, .5);	pointer-events: none;	z-index: 999999'>
+    </div>
+
+    <script>
+        var start = false;
+        var sh1;
+        var sh2;
+        var sh3;
+        var sh4;
+        var sh5;
+        var sh6;
+        var sh7;
+        var sh8;
+
+        var shapes = ["circle", "square", "rectangle", "triangle", "oval", "diamond"];
+
+        var timer = 60;
+        var countingInterval;
+
+        var dingSound = new Audio("Ding.mp3");
+        var wrongSound = new Audio("Wrong.mp3");
+        var winSound = new Audio("yay.mp3");
+        var loseSound = new Audio("lose.mp3");
+
+
+        var count = 0;
+
+
+        window.addEventListener("load", function () {
+            // document.getElementById("winPopup").classList.add("open-popup");
+            randomizeShapes();
+            GazeCloudAPI.StartEyeTracking();
+            GazeCloudAPI.OnCalibrationComplete = function () {
+                console.log('gaze Calibration Complete'); calibrated = true; start = true; countingInterval = setInterval(function () {
+                    if (timer > 0 && count < 4) {
+                        timer--;
+                        document.getElementById("timer").innerText = timer + "";
+                    }
+                }, 1000);
+            }
+            GazeCloudAPI.OnCamDenied = function () { console.log('camera  access denied') }
+            GazeCloudAPI.OnError = function (msg) { console.log('err: ' + msg) }
+            GazeCloudAPI.UseClickRecalibration = true;
+            GazeCloudAPI.OnResult = PlotGaze;            // THIS
+        });
+        function PlotGaze(GazeData) {
+            if (start) {
+
+                var x = GazeData.docX;
+                var y = GazeData.docY;
+
+                var gaze = document.getElementById("gaze");
+                x -= gaze.clientWidth / 2;
+                y -= gaze.clientHeight / 2;
+
+
+
+                gaze.style.left = x + "px";
+                gaze.style.top = y + "px";
+
+
+                if (GazeData.state != 0) {
+                    if (gaze.style.display == 'block')
+                        gaze.style.display = 'none';
+                }
+                else {
+                    if (gaze.style.display == 'none')
+                        gaze.style.display = 'block';
+                }
+
+                if (x > 21 && x < 291 && y > 40 && y < 320 && (!(document.getElementById("1").classList.contains("inside"))) && (!(document.getElementById("1").classList.contains("selected"))) && (!(document.getElementById("1").classList.contains("chosen")))) {//inside area 1
+                    const shape = document.getElementById("1");
+                    shape.classList.add("inside");
+                    sh1 = Date.now();
+                    //progress circle
+                    const leftHalf = document.getElementById("leftHalf1");
+                    const rightHalf = document.getElementById("rightHalf1");
+                    const leftFill = document.getElementById("fillLeft1");
+                    const rightFill = document.getElementById("fillRight1");
+                    setTimeout(function () {
+                        leftHalf.style.visibility = "visible";
+                        leftFill.style.animation = "fill ease-in-out 350ms";
+                    }, 350);
+                    rightHalf.style.visibility = "visible";
+                    rightFill.style.animation = "fill ease-in-out 350ms";
+
+                    setTimeout(function () {
+                        if (Date.now() - sh1 >= 700) {
+                            leftHalf.style.visibility = "hidden";
+                            rightHalf.style.visibility = "hidden";
+                            rightFill.style.animation = null;
+                            leftFill.style.animation = null;
+                            shape.classList.add("chosen");
+
+                            checkShapes();
+                        }
+                    }, 700);
+                }
+
+                if (!(x > 21 && x < 291 && y > 40 && y < 320)) { //outside area 1
+                    sh1 = Date.now();
+                    document.getElementById("1").classList.remove("inside");
+                    document.getElementById("leftHalf1").style.visibility = "hidden";
+                    document.getElementById("rightHalf1").style.visibility = "hidden";
+                    document.getElementById("fillRight1").style.animation = null;
+                    document.getElementById("fillLeft1").style.animation = null;
+                }
+
+
+                if (x > 341 && x < 610 && y > 40 && y < 320 && (!(document.getElementById("2").classList.contains("inside"))) && (!(document.getElementById("2").classList.contains("selected"))) && (!(document.getElementById("2").classList.contains("chosen")))) {//inside area 2
+                    const shape = document.getElementById("2");
+                    shape.classList.add("inside");
+                    sh2 = Date.now();
+                    //progress circle
+                    const leftHalf = document.getElementById("leftHalf2");
+                    const rightHalf = document.getElementById("rightHalf2");
+                    const leftFill = document.getElementById("fillLeft2");
+                    const rightFill = document.getElementById("fillRight2");
+                    setTimeout(function () {
+                        leftHalf.style.visibility = "visible";
+                        leftFill.style.animation = "fill ease-in-out 350ms";
+                    }, 350);
+                    rightHalf.style.visibility = "visible";
+                    rightFill.style.animation = "fill ease-in-out 350ms";
+
+                    setTimeout(function () {
+                        if (Date.now() - sh2 >= 700) {
+                            leftHalf.style.visibility = "hidden";
+                            rightHalf.style.visibility = "hidden";
+                            rightFill.style.animation = null;
+                            leftFill.style.animation = null;
+                            shape.classList.add("chosen");
+                            checkShapes();
+                        }
+                    }, 700);
+                }
+
+                if (!(x > 341 && x < 610 && y > 40 && y < 320)) { //outside area 2
+                    sh2 = Date.now();
+                    document.getElementById("2").classList.remove("inside");
+                    document.getElementById("leftHalf2").style.visibility = "hidden";
+                    document.getElementById("rightHalf2").style.visibility = "hidden";
+                    document.getElementById("fillRight2").style.animation = null;
+                    document.getElementById("fillLeft2").style.animation = null;
+                }
+
+                if (x > 661 && x < 931 && y > 40 && y < 320 && (!(document.getElementById("3").classList.contains("inside"))) && (!(document.getElementById("3").classList.contains("selected"))) && (!(document.getElementById("3").classList.contains("chosen")))) {//inside area 3
+                    const shape = document.getElementById("3");
+                    shape.classList.add("inside");
+                    sh3 = Date.now();
+                    //progress circle
+                    const leftHalf = document.getElementById("leftHalf3");
+                    const rightHalf = document.getElementById("rightHalf3");
+                    const leftFill = document.getElementById("fillLeft3");
+                    const rightFill = document.getElementById("fillRight3");
+                    setTimeout(function () {
+                        leftHalf.style.visibility = "visible";
+                        leftFill.style.animation = "fill ease-in-out 350ms";
+                    }, 350);
+                    rightHalf.style.visibility = "visible";
+                    rightFill.style.animation = "fill ease-in-out 350ms";
+
+                    setTimeout(function () {
+                        if (Date.now() - sh3 >= 700) {
+                            leftHalf.style.visibility = "hidden";
+                            rightHalf.style.visibility = "hidden";
+                            rightFill.style.animation = null;
+                            leftFill.style.animation = null;
+                            shape.classList.add("chosen");
+                            checkShapes();
+                        }
+                    }, 700);
+                }
+
+                if (!(x > 661 && x < 931 && y > 40 && y < 320)) { //outside area 3
+                    sh3 = Date.now();
+                    document.getElementById("3").classList.remove("inside");
+                    document.getElementById("leftHalf3").style.visibility = "hidden";
+                    document.getElementById("rightHalf3").style.visibility = "hidden";
+                    document.getElementById("fillRight3").style.animation = null;
+                    document.getElementById("fillLeft3").style.animation = null;
+                }
+
+
+                if (x > 981 && x < 1250 && y > 40 && y < 320 && (!(document.getElementById("4").classList.contains("inside"))) && (!(document.getElementById("4").classList.contains("selected"))) && (!(document.getElementById("4").classList.contains("chosen")))) {//inside area 4
+                    const shape = document.getElementById("4");
+                    shape.classList.add("inside");
+                    sh4 = Date.now();
+                    //progress circle
+                    const leftHalf = document.getElementById("leftHalf4");
+                    const rightHalf = document.getElementById("rightHalf4");
+                    const leftFill = document.getElementById("fillLeft4");
+                    const rightFill = document.getElementById("fillRight4");
+                    setTimeout(function () {
+                        leftHalf.style.visibility = "visible";
+                        leftFill.style.animation = "fill ease-in-out 350ms";
+                    }, 350);
+                    rightHalf.style.visibility = "visible";
+                    rightFill.style.animation = "fill ease-in-out 350ms";
+
+                    setTimeout(function () {
+                        if (Date.now() - sh4 >= 700) {
+                            leftHalf.style.visibility = "hidden";
+                            rightHalf.style.visibility = "hidden";
+                            rightFill.style.animation = null;
+                            leftFill.style.animation = null;
+                            shape.classList.add("chosen");
+                            checkShapes();
+                        }
+                    }, 700);
+                }
+
+                if (!(x > 981 && x < 1250 && y > 40 && y < 320)) { //outside area 4
+                    sh4 = Date.now();
+                    document.getElementById("4").classList.remove("inside");
+                    document.getElementById("leftHalf4").style.visibility = "hidden";
+                    document.getElementById("rightHalf4").style.visibility = "hidden";
+                    document.getElementById("fillRight4").style.animation = null;
+                    document.getElementById("fillLeft4").style.animation = null;
+                }
+
+                if (x > 21 && x < 291 && y > 400 && y < 680 && (!(document.getElementById("5").classList.contains("inside"))) && (!(document.getElementById("5").classList.contains("selected"))) && (!(document.getElementById("5").classList.contains("chosen")))) {//inside area 5
+                    const shape = document.getElementById("5");
+                    shape.classList.add("inside");
+                    sh5 = Date.now();
+                    //progress circle
+                    const leftHalf = document.getElementById("leftHalf5");
+                    const rightHalf = document.getElementById("rightHalf5");
+                    const leftFill = document.getElementById("fillLeft5");
+                    const rightFill = document.getElementById("fillRight5");
+                    setTimeout(function () {
+                        leftHalf.style.visibility = "visible";
+                        leftFill.style.animation = "fill ease-in-out 350ms";
+                    }, 350);
+                    rightHalf.style.visibility = "visible";
+                    rightFill.style.animation = "fill ease-in-out 350ms";
+
+                    setTimeout(function () {
+                        if (Date.now() - sh5 >= 700) {
+                            leftHalf.style.visibility = "hidden";
+                            rightHalf.style.visibility = "hidden";
+                            rightFill.style.animation = null;
+                            leftFill.style.animation = null;
+                            shape.classList.add("chosen");
+                            checkShapes();
+                        }
+                    }, 700);
+                }
+
+                if (!(x > 21 && x < 291 && y > 400 && y < 680)) { //outside area 5
+                    sh5 = Date.now();
+                    document.getElementById("5").classList.remove("inside");
+                    document.getElementById("leftHalf5").style.visibility = "hidden";
+                    document.getElementById("rightHalf5").style.visibility = "hidden";
+                    document.getElementById("fillRight5").style.animation = null;
+                    document.getElementById("fillLeft5").style.animation = null;
+                }
+
+
+                if (x > 341 && x < 610 && y > 400 && y < 680 && (!(document.getElementById("6").classList.contains("inside"))) && (!(document.getElementById("6").classList.contains("selected"))) && (!(document.getElementById("6").classList.contains("chosen")))) {//inside area 6
+                    const shape = document.getElementById("6");
+                    shape.classList.add("inside");
+                    sh6 = Date.now();
+                    //progress circle
+                    const leftHalf = document.getElementById("leftHalf6");
+                    const rightHalf = document.getElementById("rightHalf6");
+                    const leftFill = document.getElementById("fillLeft6");
+                    const rightFill = document.getElementById("fillRight6");
+                    setTimeout(function () {
+                        leftHalf.style.visibility = "visible";
+                        leftFill.style.animation = "fill ease-in-out 350ms";
+                    }, 350);
+                    rightHalf.style.visibility = "visible";
+                    rightFill.style.animation = "fill ease-in-out 350ms";
+
+                    setTimeout(function () {
+                        if (Date.now() - sh6 >= 700) {
+                            leftHalf.style.visibility = "hidden";
+                            rightHalf.style.visibility = "hidden";
+                            rightFill.style.animation = null;
+                            leftFill.style.animation = null;
+                            shape.classList.add("chosen");
+                            checkShapes();
+                        }
+                    }, 700);
+                }
+
+                if (!(x > 341 && x < 610 && y > 400 && y < 680)) { //outside area 6
+                    sh6 = Date.now();
+                    document.getElementById("6").classList.remove("inside");
+                    document.getElementById("leftHalf6").style.visibility = "hidden";
+                    document.getElementById("rightHalf6").style.visibility = "hidden";
+                    document.getElementById("fillRight6").style.animation = null;
+                    document.getElementById("fillLeft6").style.animation = null;
+                }
+
+                if (x > 661 && x < 931 && y > 400 && y < 680 && (!(document.getElementById("7").classList.contains("inside"))) && (!(document.getElementById("7").classList.contains("selected"))) && (!(document.getElementById("7").classList.contains("chosen")))) {//inside area 7
+                    const shape = document.getElementById("7");
+                    shape.classList.add("inside");
+                    sh7 = Date.now();
+                    //progress circle
+                    const leftHalf = document.getElementById("leftHalf7");
+                    const rightHalf = document.getElementById("rightHalf7");
+                    const leftFill = document.getElementById("fillLeft7");
+                    const rightFill = document.getElementById("fillRight7");
+                    setTimeout(function () {
+                        leftHalf.style.visibility = "visible";
+                        leftFill.style.animation = "fill ease-in-out 350ms";
+                    }, 350);
+                    rightHalf.style.visibility = "visible";
+                    rightFill.style.animation = "fill ease-in-out 350ms";
+
+                    setTimeout(function () {
+                        if (Date.now() - sh7 >= 700) {
+                            leftHalf.style.visibility = "hidden";
+                            rightHalf.style.visibility = "hidden";
+                            rightFill.style.animation = null;
+                            leftFill.style.animation = null;
+                            shape.classList.add("chosen");
+                            checkShapes();
+                        }
+                    }, 700);
+                }
+
+                if (!(x > 661 && x < 931 && y > 400 && y < 680)) { //outside area 7
+                    sh7 = Date.now();
+                    document.getElementById("7").classList.remove("inside");
+                    document.getElementById("leftHalf7").style.visibility = "hidden";
+                    document.getElementById("rightHalf7").style.visibility = "hidden";
+                    document.getElementById("fillRight7").style.animation = null;
+                    document.getElementById("fillLeft7").style.animation = null;
+                }
+
+                if (x > 981 && x < 1250 && y > 400 && y < 680 && (!(document.getElementById("8").classList.contains("inside"))) && (!(document.getElementById("8").classList.contains("selected"))) && (!(document.getElementById("8").classList.contains("chosen")))) {//inside area 8
+                    const shape = document.getElementById("8");
+                    shape.classList.add("inside");
+                    sh8 = Date.now();
+                    //progress circle
+                    const leftHalf = document.getElementById("leftHalf8");
+                    const rightHalf = document.getElementById("rightHalf8");
+                    const leftFill = document.getElementById("fillLeft8");
+                    const rightFill = document.getElementById("fillRight8");
+                    setTimeout(function () {
+                        leftHalf.style.visibility = "visible";
+                        leftFill.style.animation = "fill ease-in-out 350ms";
+                    }, 350);
+                    rightHalf.style.visibility = "visible";
+                    rightFill.style.animation = "fill ease-in-out 350ms";
+
+                    setTimeout(function () {
+                        if (Date.now() - sh8 >= 700) {
+                            leftHalf.style.visibility = "hidden";
+                            rightHalf.style.visibility = "hidden";
+                            rightFill.style.animation = null;
+                            leftFill.style.animation = null;
+                            shape.classList.add("chosen");
+                            checkShapes();
+                        }
+                    }, 700);
+                }
+
+                if (!(x > 981 && x < 1250 && y > 400 && y < 680)) { //outside area 8
+                    sh8 = Date.now();
+                    document.getElementById("8").classList.remove("inside");
+                    document.getElementById("leftHalf8").style.visibility = "hidden";
+                    document.getElementById("rightHalf8").style.visibility = "hidden";
+                    document.getElementById("fillRight8").style.animation = null;
+                    document.getElementById("fillLeft8").style.animation = null;
+                }
+
+                if (timer === 0 || count === 4) {
+                    clearInterval(countingInterval);
+                    GazeCloudAPI.StopEyeTracking();
+                    start = false;
+                    document.getElementById("gaze").style.visibility = "hidden";
+                    if (timer == 0 && count < 4) {
+                        document.getElementById("losePopup").classList.add("open-popup");
+                        loseSound.play();
+                    }
+                    else {
+                        document.getElementById("winPopup").classList.add("open-popup");
+                        winSound.play();
+                    }
+                }
+            }//start
+        }//plot gaze
+
+        function checkShapes() {
+            const chosenShapes = document.getElementsByClassName("chosen");
+            if (chosenShapes.length == 2) {
+                const shape1 = chosenShapes[0];
+                const shape2 = chosenShapes[1];
+                if (shape1.getAttribute("name") === shape2.getAttribute("name")) {
+                    dingSound.play();
+                    shape1.classList.remove("chosen");
+                    shape2.classList.remove("chosen");
+                    shape1.classList.add("selected");
+                    shape2.classList.add("selected");
+                    count++;
+                }
+
+                else {
+                    wrongSound.play();
+                    shape1.classList.remove("chosen");
+                    shape2.classList.remove("chosen");
+                    shape1.classList.add("wrong");
+                    shape2.classList.add("wrong");
+                    setTimeout(function () {
+                        shape1.classList.remove("wrong");
+                        shape2.classList.remove("wrong");
+                        shape1.classList.remove("inside");
+                        shape2.classList.remove("inside");
+                    }, 700);
+                }
+            }
+        }
+
+        function randomizeShapes() {
+            //geberate shapes
+            var chosenShapes = [];
+            while (chosenShapes.length < 4) {
+                var rand = Math.random();
+                rand = Math.floor(rand * 6);
+                if (!(chosenShapes.includes(shapes[rand]))) {
+                    chosenShapes.push(shapes[rand]);
+                }
+            }
+
+            //genearte figures according to shapes
+            var chosenFigures = [];
+            for (let i = 0; i < chosenShapes.length; i++) {
+                if (chosenShapes[i].localeCompare("circle") === 0) {
+                    chosenFigures.push({ image: "globe.png", name: "circle" });
+                }
+                else {
+                    if (chosenShapes[i].localeCompare("square") === 0) {
+                        chosenFigures.push({ image: "cube.png", name: "square" });
+                    }
+                    else {
+                        if (chosenShapes[i].localeCompare("rectangle") === 0) {
+                            chosenFigures.push({ image: "domino.png", name: "rectangle" });
+                        }
+                        else {
+                            if (chosenShapes[i].localeCompare("triangle") === 0) {
+                                chosenFigures.push({ image: "tree.png", name: "triangle" });
+                            }
+                            else {
+                                if (chosenShapes[i].localeCompare("oval") === 0) {
+                                    chosenFigures.push({ image: "bee.png", name: "oval" });
+                                }
+                                else {
+                                    if (chosenShapes[i].localeCompare("diamond") === 0) {
+                                        chosenFigures.push({ image: "snow.png", name: "diamond" });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            //randomize chosen figures
+            randomizedFigures = chosenFigures.sort(() => Math.random() - 0.5);
+
+            //assign shapes to images
+            var imageIndex = 5;
+            for (let i = 0; i < chosenShapes.length; i++) {
+                const shapeImage = document.getElementById(imageIndex + "");
+                shapeImage.src = chosenShapes[i] + ".png";
+                shapeImage.setAttribute("name", chosenShapes[i]);
+                imageIndex++;
+            }
+
+            //assign figures to images
+            for (let i = 1; i <= chosenFigures.length; i++) {
+                const figureImage = document.getElementById(i + "");
+                const chosenFigure = chosenFigures[i - 1];
+                figureImage.src = chosenFigure.image;
+                figureImage.setAttribute("name", chosenFigure.name);
+                imageIndex++;
+            }
+
+
+        }
+
+
+    </script>
+
+</body>
+
+</html>

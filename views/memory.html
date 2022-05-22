@@ -1,0 +1,852 @@
+<!DOCTYPE html> <!-- To tell the browser this file is written in modern HTML-->
+<html lang="en">
+
+<head>
+    <title>Memory</title>
+    <!-- <meta http-equiv = "refresh" content = "4; url = game1.html" /> -->
+    <script src="https://api.gazerecorder.com/GazeCloudAPI.js"></script>
+    <meta charset="UTF-8">
+
+
+    <style>
+        .flip-card {
+            background-color: transparent;
+            width: 300px;
+            height: 200px;
+            border: 1px solid #f1f1f1;
+            perspective: 1000px;
+            /* Remove this if you don't want the 3D effect */
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            /* Safari */
+            backface-visibility: hidden;
+        }
+
+        .flip-card-front {
+            background-color: #bbb;
+            color: black;
+        }
+
+        .flip-card-back {
+            background-color: dodgerblue;
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .flipped {
+            transform: rotateY(180deg);
+        }
+
+        .selected {
+            transform: rotateY(180deg);
+        }
+
+        .popup {
+            position: absolute;
+            width: 600px;
+            height: 200px;
+            /* background: #fac6f6; */
+            background: #ffffff;
+            left: 27vw;
+            top: 15vh;
+            border-radius: 20px;
+            transform: scale(0.1);
+            transition: transform 0.5s;
+            visibility: hidden;
+        }
+
+        .open-popup {
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        .circle-wrap {
+            /* margin: 150px auto; */
+            width: 120px;
+            height: 120px;
+            /* background: #fefcff; */
+            border-radius: 50%;
+            /* border: 1px solid #cdcbd0; */
+            z-index: 9999;
+            position: absolute;
+            /* left: 70px;
+            top: 100px; */
+
+        }
+
+        .circle-wrap .circle .mask,
+        .circle-wrap .circle .fill {
+            width: 120px;
+            height: 120px;
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        .mask .fill {
+            clip: rect(0px, 60px, 120px, 0px);
+            /* background-color: #4CBB17; */
+            background-color: #ffffff;
+        }
+
+        .circle-wrap .circle .mask {
+            clip: rect(0px, 120px, 120px, 60px);
+        }
+
+        .mask.full,
+        .circle .fill {
+            /* animation: fill ease-in-out 700ms; */
+            transform: rotate(180deg);
+        }
+
+        @keyframes fill {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(180deg);
+            }
+        }
+    </style>
+</head>
+
+
+<body style="background: linear-gradient(90deg, #1CB5E0 0%, #000851 100%); overflow-y:hidden; overflow-x:hidden;">
+
+    <div id="card1">
+        <!-- <img id="1" src="back.png" style="left: 20px; top: 10px; width: 270px; height: 340px; position: absolute;"> -->
+        <div class="flip-card" style="position: absolute; left: 20px; top: 10px; width: 270px; height: 340px;">
+            <div class="flip-card-inner" id="1" name="four">
+                <div class="flip-card-front">
+                    <img src="back.png" style="width:270px; height:340px;">
+                </div>
+                <div class="flip-card-back">
+                    <img src="four_word.png" style="width:270px; height:340px;" id="img1">
+                </div>
+            </div>
+        </div>
+
+        <div class="circle-wrap" style="position: absolute; left:95px; top:120px;">
+            <div class="circle">
+                <div class="mask full" id="leftHalf1" style="visibility: hidden;">
+                    <div class="fill" id="fillLeft1"></div>
+                </div>
+                <div class="mask half" id="rightHalf1" style="visibility: hidden;">
+                    <div class="fill" id="fillRight1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="card2">
+        <!-- <img id="2" src="back.png" style="left: 340px; top: 10px; width: 270px; height: 340px; position: absolute;"> -->
+        <div class="flip-card" style="position: absolute; left: 340px; top: 10px; width: 270px; height: 340px;">
+            <div class="flip-card-inner" id="2" name="two">
+                <div class="flip-card-front">
+                    <img src="back.png" style="width:270px; height:340px;">
+                </div>
+                <div class="flip-card-back">
+                    <img src="two_word.png" style="width:270px; height:340px;" id="img2">
+                </div>
+            </div>
+        </div>
+
+        <div class="circle-wrap" style="position: absolute; left:415px; top:120px;">
+            <div class="circle">
+                <div class="mask full" id="leftHalf2" style="visibility: hidden;">
+                    <div class="fill" id="fillLeft2"></div>
+                </div>
+                <div class="mask half" id="rightHalf2" style="visibility: hidden;">
+                    <div class="fill" id="fillRight2"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="card3">
+        <!-- <img id="3" src="back.png" style="left: 660px; top: 10px; width: 270px; height: 340px; position: absolute;"> -->
+        <div class="flip-card" style="position: absolute; left: 660px; top: 10px; width: 270px; height: 340px;">
+            <div class="flip-card-inner" id="3" name="three">
+                <div class="flip-card-front">
+                    <img src="back.png" style="width:270px; height:340px;">
+                </div>
+                <div class="flip-card-back">
+                    <img src="three_shape.png" style="width:270px; height:340px;" id="img3">
+                </div>
+            </div>
+        </div>
+
+        <div class="circle-wrap" style="position: absolute; left:735px; top:120px;">
+            <div class="circle">
+                <div class="mask full" id="leftHalf3" style="visibility: hidden;">
+                    <div class="fill" id="fillLeft3"></div>
+                </div>
+                <div class="mask half" id="rightHalf3" style="visibility: hidden;">
+                    <div class="fill" id="fillRight3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="card4">
+        <!-- <img id="4" src="back.png" style="left: 20px; bottom: 10px; width: 270px; height: 340px; position: absolute;"> -->
+        <div class="flip-card" style="position: absolute; left: 20px; bottom: 10px; width: 270px; height: 340px;">
+            <div class="flip-card-inner" id="4" name="two">
+                <div class="flip-card-front">
+                    <img src="back.png" style="width:270px; height:340px;">
+                </div>
+                <div class="flip-card-back">
+                    <img src="two_shape.png" style="width:270px; height:340px;" id="img4">
+                </div>
+            </div>
+        </div>
+
+        <div class="circle-wrap" style="position: absolute; left:95px; bottom:120px;">
+            <div class="circle">
+                <div class="mask full" id="leftHalf4" style="visibility: hidden;">
+                    <div class="fill" id="fillLeft4"></div>
+                </div>
+                <div class="mask half" id="rightHalf4" style="visibility: hidden;">
+                    <div class="fill" id="fillRight4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="card5">
+        <!-- <img id="5" src="back.png" style="left: 340px; bottom: 10px; width: 270px; height: 340px; position: absolute;"> -->
+        <div class="flip-card" style="position: absolute; left: 340px; bottom: 10px; width: 270px; height: 340px;">
+            <div class="flip-card-inner" id="5" name="three">
+                <div class="flip-card-front">
+                    <img src="back.png" style="width:270px; height:340px;">
+                </div>
+                <div class="flip-card-back">
+                    <img src="three_word.png" style="width:270px; height:340px;" id="img5">
+                </div>
+            </div>
+        </div>
+        <div class="circle-wrap" style="position: absolute; left:415px; bottom:120px;">
+            <div class="circle">
+                <div class="mask full" id="leftHalf5" style="visibility: hidden;">
+                    <div class="fill" id="fillLeft5"></div>
+                </div>
+                <div class="mask half" id="rightHalf5" style="visibility: hidden;">
+                    <div class="fill" id="fillRight5"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="card6">
+        <!-- <img id="6" src="back.png" style="left: 660px; bottom: 10px; width: 270px; height: 340px; position: absolute;"> -->
+        <div class="flip-card" style="position: absolute; left: 660px; bottom: 10px; width: 270px; height: 340px;">
+            <div class="flip-card-inner" id="6" name="four">
+                <div class="flip-card-front">
+                    <img src="back.png" style="width:270px; height:340px;">
+                </div>
+                <div class="flip-card-back">
+                    <img src="four_shape.png" style="width:270px; height:340px;" id="img6">
+                </div>
+            </div>
+        </div>
+
+        <div class="circle-wrap" style="position: absolute; left:735px; bottom:120px;">
+            <div class="circle">
+                <div class="mask full" id="leftHalf6" style="visibility: hidden;">
+                    <div class="fill" id="fillLeft6"></div>
+                </div>
+                <div class="mask half" id="rightHalf6" style="visibility: hidden;">
+                    <div class="fill" id="fillRight6"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <h1 style="position: absolute; left: 1120px; top: 30px; color: black; font-size:3rem; color: #00adef;">Time Left:
+    </h1>
+
+    <h1 id="timer" style="position: absolute; left: 1200px; top: 90px; color: black; font-size:3rem; color: #00adef;">
+        60</h1>
+
+    <div class="popup" id="losePopup">
+        <h1 style="text-align: center; color: #000; top: -3vh; position: relative;">Time's Up &#x1F615;</h1>
+
+        <form method="GET" action="home">
+            <input type="submit" value="Exit"
+                style="position: absolute; top: 13vh; left: 3vw; width: 150px; height: 50px; font-size: 1.5rem; background: red; font-weight: 700; " />
+        </form>
+        <p style="text-align: center; position: relative; top:9vh; color: #000; ">Use your mouse cursor instead of your
+            eye cursor to click on the buttons</p>
+
+        <form method="GET" action="memory">
+            <input type="submit" value="Try Again!"
+                style="position: absolute; top: 13vh; left: 26vw; width: 150px; height: 50px; font-size: 1.5rem; background: #0BDA51; font-weight: 700;" />
+        </form>
+
+
+    </div>
+
+
+    <div class="popup" id="winPopup">
+        <h1 style="text-align: center; color: #000; top: -3vh; position: relative;">YOU WON &#128516;</h1>
+
+        <form method="GET" action="home">
+            <input type="submit" value="Exit"
+                style="position: absolute; top: 13vh; left: 3vw; width: 150px; height: 50px; font-size: 1.5rem; background: red; font-weight: 700; " />
+        </form>
+        <p style="text-align: center; position: relative; top:9vh; color: #000; ">Use your mouse cursor instead of your
+            eye cursor to click on the buttons</p>
+
+        <form method="GET" action="memory">
+            <input type="submit" value="Play Again!"
+                style="position: absolute; top: 13vh; left: 26vw; width: 150px; height: 50px; font-size: 1.5rem; background: #0BDA51; font-weight: 700;" />
+        </form>
+
+
+    </div>
+
+
+
+
+
+    <div id="gaze"
+        style='position: absolute;display:none;width: 100px;height: 100px;border-radius: 50%;border: solid 2px  rgba(255, 255,255, .2);	box-shadow: 0 0 100px 3px rgba(125, 125,125, .5);	pointer-events: none;	z-index: 999999'>
+    </div>
+
+    <script>
+
+
+        var start = false;
+        var ins1;
+        var ins2;
+        var ins3;
+        var ins4;
+        var ins5;
+        var ins6;
+        const options = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+        var timer = 60;
+        var countingInterval;
+        count = 0;
+
+        var dingSound = new Audio("Ding.mp3");
+        var wrongSound = new Audio("Wrong.mp3");
+        var winSound = new Audio("yay.mp3");
+        var loseSound = new Audio("lose.mp3");
+
+
+        window.addEventListener("load", function () {
+            randomizeCards();
+            GazeCloudAPI.StartEyeTracking();
+            GazeCloudAPI.OnCalibrationComplete = function () {
+                console.log('gaze Calibration Complete'); calibrated = true; start = true; countingInterval = setInterval(function () {
+                    if (timer > 0 && count < 3) {
+                        timer--;
+                        document.getElementById("timer").innerText = timer + "";
+                    }
+                }, 1000);
+            }
+            GazeCloudAPI.OnCamDenied = function () { console.log('camera  access denied') }
+            GazeCloudAPI.OnError = function (msg) { console.log('err: ' + msg) }
+            GazeCloudAPI.UseClickRecalibration = true;
+            GazeCloudAPI.OnResult = PlotGaze;            // THIS
+        });
+
+
+        function PlotGaze(GazeData) {
+
+            var x = GazeData.docX;
+            var y = GazeData.docY;
+
+            var gaze = document.getElementById("gaze");
+            x -= gaze.clientWidth / 2;
+            y -= gaze.clientHeight / 2;
+
+
+
+            gaze.style.left = x + "px";
+            gaze.style.top = y + "px";
+
+
+            if (GazeData.state != 0) {
+                if (gaze.style.display == 'block')
+                    gaze.style.display = 'none';
+            }
+            else {
+                if (gaze.style.display == 'none')
+                    gaze.style.display = 'block';
+            }
+            if (start) {
+
+
+                if (x > 21 && x < 291 && y > 10 && y < 350 && (!(document.getElementById("1").classList.contains("flipped"))) && (!(document.getElementById("1").classList.contains("selected")))) { //inside 1
+                    const card = document.getElementById("1");
+                    if (!(card.classList.contains("inside"))) {
+                        card.classList.add("inside");
+                        ins1 = Date.now();
+                        //progress circle
+                        const leftHalf = document.getElementById("leftHalf1");
+                        const rightHalf = document.getElementById("rightHalf1");
+                        const leftFill = document.getElementById("fillLeft1");
+                        const rightFill = document.getElementById("fillRight1");
+                        setTimeout(function () {
+                            leftHalf.style.visibility = "visible";
+                            leftFill.style.animation = "fill ease-in-out 350ms";
+                        }, 350);
+                        rightHalf.style.visibility = "visible";
+                        rightFill.style.animation = "fill ease-in-out 350ms";
+
+                        setTimeout(function () {  //check if I've been looking continously for 700ms
+                            if (Date.now() - ins1 >= 700) {
+                                leftHalf.style.visibility = "hidden";
+                                rightHalf.style.visibility = "hidden";
+                                rightFill.style.animation = null;
+                                leftFill.style.animation = null;
+                                card.classList.add("flipped");
+                               
+
+                                var alreadyFlipped = document.getElementsByClassName("flipped");
+                                if (alreadyFlipped.length == 2) {
+                                    if (alreadyFlipped[0].getAttribute("name") === alreadyFlipped[1].getAttribute("name")) {
+                                        dingSound.play();
+                                        alreadyFlipped[0].classList.add("selected");
+                                        alreadyFlipped[1].classList.add("selected");
+                                        const c1 = alreadyFlipped[0];
+                                        const c2 = alreadyFlipped[1];
+                                        c1.classList.remove("flipped");
+                                        c2.classList.remove("flipped");
+                                        count++;
+                                    }
+                                    else {
+                                        wrongSound.play();
+                                        const c1 = alreadyFlipped[0];
+                                        const c2 = alreadyFlipped[1];
+                                        setTimeout(function () {
+                                            c1.classList.remove("inside");
+                                            c2.classList.remove("inside");
+                                            c1.classList.remove("flipped");
+                                            c2.classList.remove("flipped");
+                                        }, 700);
+                                    }
+                                }
+                            }
+                        }, 700);
+                    }
+
+                }
+
+                if (!(x > 21 && x < 291 && y > 10 && y < 350)) {  //outside area 1
+                    ins1 = Date.now();
+                    const card = document.getElementById("1");
+                    card.classList.remove("inside");
+                    document.getElementById("leftHalf1").style.visibility = "hidden";
+                    document.getElementById("rightHalf1").style.visibility = "hidden";
+                    document.getElementById("fillRight1").style.animation = null;
+                    document.getElementById("fillLeft1").style.animation = null;
+                }
+
+                if (x > 341 && x < 610 && y > 10 && y < 350 && (!(document.getElementById("2").classList.contains("selected"))) && (!(document.getElementById("2").classList.contains("flipped")))) {//inside area 2
+                    const card = document.getElementById("2");
+                    if (!(card.classList.contains("inside"))) {
+                        card.classList.add("inside");
+                        ins2 = Date.now();
+                        //progress circle
+                        const leftHalf = document.getElementById("leftHalf2");
+                        const rightHalf = document.getElementById("rightHalf2");
+                        const leftFill = document.getElementById("fillLeft2");
+                        const rightFill = document.getElementById("fillRight2");
+                        setTimeout(function () {
+                            leftHalf.style.visibility = "visible";
+                            leftFill.style.animation = "fill ease-in-out 350ms";
+                        }, 350);
+                        rightHalf.style.visibility = "visible";
+                        rightFill.style.animation = "fill ease-in-out 350ms";
+                        setTimeout(function () {
+                            if (Date.now() - ins2 >= 700) {
+                                leftHalf.style.visibility = "hidden";
+                                rightHalf.style.visibility = "hidden";
+                                rightFill.style.animation = null;
+                                leftFill.style.animation = null;
+                                card.classList.add("flipped");
+
+                                var alreadyFlipped = document.getElementsByClassName("flipped");
+                                if (alreadyFlipped.length == 2) {
+                                    if (alreadyFlipped[0].getAttribute("name") === alreadyFlipped[1].getAttribute("name")) {
+                                        dingSound.play();
+                                        alreadyFlipped[0].classList.add("selected");
+                                        alreadyFlipped[1].classList.add("selected");
+                                        const c1 = alreadyFlipped[0];
+                                        const c2 = alreadyFlipped[1];
+                                        c1.classList.remove("flipped");
+                                        c2.classList.remove("flipped");
+                                        count++;
+                                    }
+                                    else {
+                                        wrongSound.play();
+                                        const c1 = alreadyFlipped[0];
+                                        const c2 = alreadyFlipped[1];
+                                        setTimeout(function () {
+                                            c1.classList.remove("inside");
+                                            c2.classList.remove("inside");
+                                            c1.classList.remove("flipped");
+                                            c2.classList.remove("flipped");
+                                        }, 700);
+                                    }
+                                }
+                            }
+                        }, 700);
+                    }
+                }
+
+                if (!(x > 341 && x < 610 && y > 10 && y < 350)) {//outside area 2
+                    ins2 = Date.now();
+                    const card = document.getElementById("2");
+                    card.classList.remove("inside");
+                    document.getElementById("leftHalf2").style.visibility = "hidden";
+                    document.getElementById("rightHalf2").style.visibility = "hidden";
+                    document.getElementById("fillRight2").style.animation = null;
+                    document.getElementById("fillLeft2").style.animation = null;
+                }
+
+                if (x > 661 && x < 931 && y > 10 && y < 350 && (!(document.getElementById("3").classList.contains("selected"))) && (!(document.getElementById("3").classList.contains("flipped")))) {//inside area 3
+                    const card = document.getElementById("3");
+                    if (!(card.classList.contains("inside"))) {
+                        card.classList.add("inside");
+                        ins3 = Date.now();
+                        //progress circle
+                        const leftHalf = document.getElementById("leftHalf3");
+                        const rightHalf = document.getElementById("rightHalf3");
+                        const leftFill = document.getElementById("fillLeft3");
+                        const rightFill = document.getElementById("fillRight3");
+                        setTimeout(function () {
+                            leftHalf.style.visibility = "visible";
+                            leftFill.style.animation = "fill ease-in-out 350ms";
+                        }, 350);
+                        rightHalf.style.visibility = "visible";
+                        rightFill.style.animation = "fill ease-in-out 350ms";
+
+                        setTimeout(function () { //check I've been looking for 700 continous ms
+                            if (Date.now() - ins3 >= 700) {
+                                leftHalf.style.visibility = "hidden";
+                                rightHalf.style.visibility = "hidden";
+                                rightFill.style.animation = null;
+                                leftFill.style.animation = null;
+                                //remove circle then flip
+                                card.classList.add("flipped");
+
+                                var alreadyFlipped = document.getElementsByClassName("flipped");
+                                if (alreadyFlipped.length == 2) {
+                                    if (alreadyFlipped[0].getAttribute("name") === alreadyFlipped[1].getAttribute("name")) {
+                                        dingSound.play();
+                                        alreadyFlipped[0].classList.add("selected");
+                                        alreadyFlipped[1].classList.add("selected");
+                                        const c1 = alreadyFlipped[0];
+                                        const c2 = alreadyFlipped[1];
+                                        c1.classList.remove("flipped");
+                                        c2.classList.remove("flipped");
+                                        count++;
+                                    }
+                                    else {
+                                        wrongSound.play();
+                                        const c1 = alreadyFlipped[0];
+                                        const c2 = alreadyFlipped[1];
+                                        setTimeout(function () {
+                                            c1.classList.remove("inside");
+                                            c2.classList.remove("inside");
+                                            c1.classList.remove("flipped");
+                                            c2.classList.remove("flipped");
+                                        }, 700);
+                                    }
+                                }
+                            }
+                        }, 700);
+                    }
+                }
+
+                if (!(x > 661 && x < 931 && y > 10 && y < 350)) {//outside area 3
+                    ins3 = Date.now();
+                    const card = document.getElementById("3");
+                    card.classList.remove("inside");
+                    document.getElementById("leftHalf3").style.visibility = "hidden";
+                    document.getElementById("rightHalf3").style.visibility = "hidden";
+                    document.getElementById("fillRight3").style.animation = null;
+                    document.getElementById("fillLeft3").style.animation = null;
+                }
+
+
+                if (x > 21 && x < 291 && y > 370 && y < 710 && (!(document.getElementById("4").classList.contains("selected"))) && (!(document.getElementById("4").classList.contains("flipped")))) {//inside area 4
+                    const card = document.getElementById("4");
+                    if (!(card.classList.contains("inside"))) {
+                        card.classList.add("inside");
+                        ins4 = Date.now();
+                        //progress circle
+                        const leftHalf = document.getElementById("leftHalf4");
+                        const rightHalf = document.getElementById("rightHalf4");
+                        const leftFill = document.getElementById("fillLeft4");
+                        const rightFill = document.getElementById("fillRight4");
+                        setTimeout(function () {
+                            leftHalf.style.visibility = "visible";
+                            leftFill.style.animation = "fill ease-in-out 350ms";
+                        }, 350);
+                        rightHalf.style.visibility = "visible";
+                        rightFill.style.animation = "fill ease-in-out 350ms";
+                        setTimeout(function () { //check I've been looking for continous 700ms
+                            if (Date.now() - ins4 >= 700) {
+                                leftHalf.style.visibility = "hidden";
+                                rightHalf.style.visibility = "hidden";
+                                rightFill.style.animation = null;
+                                leftFill.style.animation = null;
+                                //remove circle then flip
+                                card.classList.add("flipped");
+
+                                var alreadyFlipped = document.getElementsByClassName("flipped");
+                                if (alreadyFlipped.length == 2) {
+                                    if (alreadyFlipped[0].getAttribute("name") === alreadyFlipped[1].getAttribute("name")) {
+                                        dingSound.play();
+                                        alreadyFlipped[0].classList.add("selected");
+                                        alreadyFlipped[1].classList.add("selected");
+                                        const c1 = alreadyFlipped[0];
+                                        const c2 = alreadyFlipped[1];
+                                        c1.classList.remove("flipped");
+                                        c2.classList.remove("flipped");
+                                        count++;
+
+                                    }
+                                    else {
+                                        wrongSound.play();
+                                        const c1 = alreadyFlipped[0];
+                                        const c2 = alreadyFlipped[1];
+                                        setTimeout(function () {
+                                            c1.classList.remove("inside");
+                                            c2.classList.remove("inside");
+                                            c1.classList.remove("flipped");
+                                            c2.classList.remove("flipped");
+                                        }, 700);
+                                    }
+                                }
+                            }
+                        }, 700);
+                    }
+                }
+
+
+                if (!(x > 21 && x < 291 && y > 370 && y < 710)) {//outside area 4
+                    ins4 = Date.now();
+                    const card = document.getElementById("4");
+                    card.classList.remove("inside");
+                    document.getElementById("leftHalf4").style.visibility = "hidden";
+                    document.getElementById("rightHalf4").style.visibility = "hidden";
+                    document.getElementById("fillRight4").style.animation = null;
+                    document.getElementById("fillLeft4").style.animation = null;
+                }
+
+                if (x > 341 && x < 610 && y > 370 && y < 710 && (!(document.getElementById("5").classList.contains("flipped"))) && (!(document.getElementById("5").classList.contains("selected")))) { //inside 5
+                    const card = document.getElementById("5");
+                    if (!(card.classList.contains("inside"))) {
+                        card.classList.add("inside");
+                        ins5 = Date.now();
+                        //progress circle
+                        const leftHalf = document.getElementById("leftHalf5");
+                        const rightHalf = document.getElementById("rightHalf5");
+                        const leftFill = document.getElementById("fillLeft5");
+                        const rightFill = document.getElementById("fillRight5");
+                        setTimeout(function () {
+                            leftHalf.style.visibility = "visible";
+                            leftFill.style.animation = "fill ease-in-out 350ms";
+                        }, 350);
+                        rightHalf.style.visibility = "visible";
+                        rightFill.style.animation = "fill ease-in-out 350ms";
+                        setTimeout(function () { //check i've been looking for 700 ms continously
+                            if (Date.now() - ins5 >= 700) {
+                                leftHalf.style.visibility = "hidden";
+                                rightHalf.style.visibility = "hidden";
+                                rightFill.style.animation = null;
+                                leftFill.style.animation = null;
+                                //remove circle then flip
+                                card.classList.add("flipped");
+
+                                var alreadyFlipped = document.getElementsByClassName("flipped");
+                                if (alreadyFlipped.length == 2) {
+                                    if (alreadyFlipped[0].getAttribute("name") === alreadyFlipped[1].getAttribute("name")) {
+                                        dingSound.play();
+                                        alreadyFlipped[0].classList.add("selected");
+                                        alreadyFlipped[1].classList.add("selected");
+                                        const c1 = alreadyFlipped[0];
+                                        const c2 = alreadyFlipped[1];
+                                        c1.classList.remove("flipped");
+                                        c2.classList.remove("flipped");
+                                        count++;
+                                    }
+                                    else {
+                                        wrongSound.play();
+                                        const c1 = alreadyFlipped[0];
+                                        const c2 = alreadyFlipped[1];
+                                        setTimeout(function () {
+                                            c1.classList.remove("inside");
+                                            c2.classList.remove("inside");
+                                            c1.classList.remove("flipped");
+                                            c2.classList.remove("flipped");
+                                        }, 700);
+                                    }
+                                }
+                            }
+                        }, 700);
+                    }
+
+                }
+
+                if (!(x > 341 && x < 610 && y > 370 && y < 710)) {//outside area 5
+                    ins5 = Date.now();
+                    const card = document.getElementById("5");
+                    card.classList.remove("inside");
+                    document.getElementById("leftHalf5").style.visibility = "hidden";
+                    document.getElementById("rightHalf5").style.visibility = "hidden";
+                    document.getElementById("fillRight5").style.animation = null;
+                    document.getElementById("fillLeft5").style.animation = null;
+                }
+
+                if (x > 661 && x < 931 && y > 370 && y < 710 && (!(document.getElementById("6").classList.contains("flipped"))) && (!(document.getElementById("6").classList.contains("selected")))) { //inside 6
+                    const card = document.getElementById("6");
+                    if (!(card.classList.contains("inside"))) {
+                        card.classList.add("inside");
+                        ins6 = Date.now();
+                        //progress circle
+                        const leftHalf = document.getElementById("leftHalf6");
+                        const rightHalf = document.getElementById("rightHalf6");
+                        const leftFill = document.getElementById("fillLeft6");
+                        const rightFill = document.getElementById("fillRight6");
+                        setTimeout(function () {
+                            leftHalf.style.visibility = "visible";
+                            leftFill.style.animation = "fill ease-in-out 350ms";
+                        }, 350);
+                        rightHalf.style.visibility = "visible";
+                        rightFill.style.animation = "fill ease-in-out 350ms";
+                        setTimeout(function () { //check i've been looking for 700 ms continously
+                            if (Date.now() - ins6 >= 700) {
+                                leftHalf.style.visibility = "hidden";
+                                rightHalf.style.visibility = "hidden";
+                                rightFill.style.animation = null;
+                                leftFill.style.animation = null;
+                                //remove circle then flip
+                                card.classList.add("flipped");
+
+                                var alreadyFlipped = document.getElementsByClassName("flipped");
+                                if (alreadyFlipped.length == 2) {
+                                    if (alreadyFlipped[0].getAttribute("name") === alreadyFlipped[1].getAttribute("name")) {
+                                        dingSound.play();
+                                        alreadyFlipped[0].classList.add("selected");
+                                        alreadyFlipped[1].classList.add("selected");
+                                        const c1 = alreadyFlipped[0];
+                                        const c2 = alreadyFlipped[1];
+                                        c1.classList.remove("flipped");
+                                        c2.classList.remove("flipped");
+                                        count++;
+                                    }
+                                    else {
+                                        wrongSound.play();
+                                        const c1 = alreadyFlipped[0];
+                                        const c2 = alreadyFlipped[1];
+                                        setTimeout(function () {
+                                            c1.classList.remove("inside");
+                                            c2.classList.remove("inside");
+                                            c1.classList.remove("flipped");
+                                            c2.classList.remove("flipped");
+                                        }, 700);
+                                    }
+                                }
+                            }
+                        }, 700);
+                    }
+
+                }
+
+                if (!(x > 661 && x < 931 && y > 370 && y < 710)) {//outside area 6
+                    ins6 = Date.now();
+                    const card = document.getElementById("6");
+                    card.classList.remove("inside");
+                    document.getElementById("leftHalf6").style.visibility = "hidden";
+                    document.getElementById("rightHalf6").style.visibility = "hidden";
+                    document.getElementById("fillRight6").style.animation = null;
+                    document.getElementById("fillLeft6").style.animation = null;
+                }
+
+                if (timer == 0 || count == 3) {
+                    clearInterval(countingInterval);
+                    GazeCloudAPI.StopEyeTracking();
+                    start = false;
+                    document.getElementById("gaze").style.visibility = "hidden";
+                    if (timer == 0 && count < 3) {
+                        document.getElementById("losePopup").classList.add("open-popup");
+                        loseSound.play();
+                    }
+                    else {
+                        document.getElementById("winPopup").classList.add("open-popup");
+                        winSound.play();
+                    }
+                }
+
+            } // start
+        }//plot gaze
+
+        function randomizeCards() {
+            var numbers = [];
+            while (numbers.length < 3) {  //generate 3 random numbers to be displayed on cards
+                var rand = Math.random();
+                rand = Math.floor(rand * 8);
+                if (!(numbers.includes(options[rand]))) {
+                    numbers.push(options[rand]);
+                }
+            }
+
+            var nonRandomizedCards = [];
+            for (let i = 0; i < numbers.length; i++) {  //generate imagess
+                const number = numbers[i];
+                const wordCard = number + "_word.png";
+                const shapeCard = number + "_shape.png";
+                nonRandomizedCards.push(wordCard);
+                nonRandomizedCards.push(shapeCard);
+            }
+
+            const randomizedCards = nonRandomizedCards.sort(() => Math.random() - 0.5);
+
+            for (let j = 1; j <= randomizedCards.length; j++) {
+                const card = document.getElementById(j);
+                const imgId = "img" + j;
+                const image = document.getElementById(imgId);
+
+                const cardFace = randomizedCards[j - 1];
+                image.src = cardFace;
+                const splitted = cardFace.split('_');
+                card.setAttribute("name", splitted[0]);
+            }
+
+        }
+
+
+
+    </script>
+
+</body>
+
+</html>
