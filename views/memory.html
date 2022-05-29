@@ -109,7 +109,7 @@
 
         .mask.full,
         .circle .fill {
-            /* animation: fill ease-in-out 700ms; */
+            /* animation: fill ease-in-out 900ms; */
             transform: rotate(180deg);
         }
 
@@ -122,11 +122,39 @@
                 transform: rotate(180deg);
             }
         }
+
+        .round-time-bar div {
+            height: 6px;
+            background: linear-gradient(to bottom, #fef300, #fff980);
+            animation: roundtime calc(var(--duration) * 1s) steps(var(--duration)) forwards;
+            /* animation: roundtime calc(var(--duration) * 1s) linear forwards; */
+            transform-origin: left center;
+        }
+
+        .round-time-bar[data-style="smooth"] div {
+            animation: roundtime calc(var(--duration) * 1s) linear forwards;
+        }
+
+        @keyframes roundtime {
+            to {
+                /* More performant than animating `width` */
+                transform: scaleX(0);
+            }
+        }
+
+        .start-bar {
+            height: 6px;
+            background: linear-gradient(to bottom, #fef300, #fff980);
+        }
     </style>
 </head>
 
 
 <body style="background: linear-gradient(90deg, #1CB5E0 0%, #000851 100%); overflow-y:hidden; overflow-x:hidden;">
+
+    <div class="start-bar" data-style="smooth" style="--duration: 60;" id="time-bar">
+        <div></div>
+    </div>
 
     <div id="card1">
         <!-- <img id="1" src="back.png" style="left: 20px; top: 10px; width: 270px; height: 340px; position: absolute;"> -->
@@ -156,7 +184,7 @@
 
     <div id="card2">
         <!-- <img id="2" src="back.png" style="left: 340px; top: 10px; width: 270px; height: 340px; position: absolute;"> -->
-        <div class="flip-card" style="position: absolute; left: 340px; top: 10px; width: 270px; height: 340px;">
+        <div class="flip-card" style="position: absolute; left: 633px; top: 10px; width: 270px; height: 340px;">
             <div class="flip-card-inner" id="2" name="two">
                 <div class="flip-card-front">
                     <img src="back.png" style="width:270px; height:340px;">
@@ -167,7 +195,7 @@
             </div>
         </div>
 
-        <div class="circle-wrap" style="position: absolute; left:415px; top:120px;">
+        <div class="circle-wrap" style="position: absolute; left:708px; top:120px;">
             <div class="circle">
                 <div class="mask full" id="leftHalf2" style="visibility: hidden;">
                     <div class="fill" id="fillLeft2"></div>
@@ -182,7 +210,7 @@
 
     <div id="card3">
         <!-- <img id="3" src="back.png" style="left: 660px; top: 10px; width: 270px; height: 340px; position: absolute;"> -->
-        <div class="flip-card" style="position: absolute; left: 660px; top: 10px; width: 270px; height: 340px;">
+        <div class="flip-card" style="position: absolute; left: 1246px; top: 10px; width: 270px; height: 340px;">
             <div class="flip-card-inner" id="3" name="three">
                 <div class="flip-card-front">
                     <img src="back.png" style="width:270px; height:340px;">
@@ -193,7 +221,7 @@
             </div>
         </div>
 
-        <div class="circle-wrap" style="position: absolute; left:735px; top:120px;">
+        <div class="circle-wrap" style="position: absolute; left:1321px; top:120px;">
             <div class="circle">
                 <div class="mask full" id="leftHalf3" style="visibility: hidden;">
                     <div class="fill" id="fillLeft3"></div>
@@ -208,7 +236,7 @@
 
     <div id="card4">
         <!-- <img id="4" src="back.png" style="left: 20px; bottom: 10px; width: 270px; height: 340px; position: absolute;"> -->
-        <div class="flip-card" style="position: absolute; left: 20px; bottom: 10px; width: 270px; height: 340px;">
+        <div class="flip-card" style="position: absolute; left: 20px; bottom: 5px; width: 270px; height: 340px;">
             <div class="flip-card-inner" id="4" name="two">
                 <div class="flip-card-front">
                     <img src="back.png" style="width:270px; height:340px;">
@@ -219,7 +247,7 @@
             </div>
         </div>
 
-        <div class="circle-wrap" style="position: absolute; left:95px; bottom:120px;">
+        <div class="circle-wrap" style="position: absolute; left:95px; bottom:117px;">
             <div class="circle">
                 <div class="mask full" id="leftHalf4" style="visibility: hidden;">
                     <div class="fill" id="fillLeft4"></div>
@@ -235,7 +263,7 @@
 
     <div id="card5">
         <!-- <img id="5" src="back.png" style="left: 340px; bottom: 10px; width: 270px; height: 340px; position: absolute;"> -->
-        <div class="flip-card" style="position: absolute; left: 340px; bottom: 10px; width: 270px; height: 340px;">
+        <div class="flip-card" style="position: absolute; left: 633px; bottom: 5px; width: 270px; height: 340px;">
             <div class="flip-card-inner" id="5" name="three">
                 <div class="flip-card-front">
                     <img src="back.png" style="width:270px; height:340px;">
@@ -245,7 +273,7 @@
                 </div>
             </div>
         </div>
-        <div class="circle-wrap" style="position: absolute; left:415px; bottom:120px;">
+        <div class="circle-wrap" style="position: absolute; left:708px; bottom:117px;">
             <div class="circle">
                 <div class="mask full" id="leftHalf5" style="visibility: hidden;">
                     <div class="fill" id="fillLeft5"></div>
@@ -260,7 +288,7 @@
 
     <div id="card6">
         <!-- <img id="6" src="back.png" style="left: 660px; bottom: 10px; width: 270px; height: 340px; position: absolute;"> -->
-        <div class="flip-card" style="position: absolute; left: 660px; bottom: 10px; width: 270px; height: 340px;">
+        <div class="flip-card" style="position: absolute; left: 1246px; bottom: 5px; width: 270px; height: 340px;">
             <div class="flip-card-inner" id="6" name="four">
                 <div class="flip-card-front">
                     <img src="back.png" style="width:270px; height:340px;">
@@ -271,7 +299,7 @@
             </div>
         </div>
 
-        <div class="circle-wrap" style="position: absolute; left:735px; bottom:120px;">
+        <div class="circle-wrap" style="position: absolute; left:1321px; bottom:117px;">
             <div class="circle">
                 <div class="mask full" id="leftHalf6" style="visibility: hidden;">
                     <div class="fill" id="fillLeft6"></div>
@@ -284,11 +312,11 @@
     </div>
 
 
-    <h1 style="position: absolute; left: 1120px; top: 30px; color: black; font-size:3rem; color: #00adef;">Time Left:
+    <!-- <h1 style="position: absolute; left: 1120px; top: 30px; color: black; font-size:3rem; color: #00adef;">Time Left:
     </h1>
 
     <h1 id="timer" style="position: absolute; left: 1200px; top: 90px; color: black; font-size:3rem; color: #00adef;">
-        60</h1>
+        60</h1> -->
 
     <div class="popup" id="losePopup">
         <h1 style="text-align: center; color: #000; top: -3vh; position: relative;">Time's Up &#x1F615;</h1>
@@ -357,13 +385,22 @@
 
 
         window.addEventListener("load", function () {
+            console.log(window.screen.width);
+            console.log(window.screen.availHeight);
+            var rect = document.getElementById("card5").getBoundingClientRect();
+            console.log(rect.top, rect.right, rect.bottom, rect.left);
             randomizeCards();
             GazeCloudAPI.StartEyeTracking();
             GazeCloudAPI.OnCalibrationComplete = function () {
-                console.log('gaze Calibration Complete'); calibrated = true; start = true; countingInterval = setInterval(function () {
+                //start animation of the loading bar
+                document.getElementById("time-bar").classList.remove("start-bar");
+                document.getElementById("time-bar").classList.add("round-time-bar");
+                calibrated = true;
+                start = true;
+                countingInterval = setInterval(function () {
                     if (timer > 0 && count < 3) {
                         timer--;
-                        document.getElementById("timer").innerText = timer + "";
+                        // document.getElementById("timer").innerText = timer + "";
                     }
                 }, 1000);
             }
@@ -412,19 +449,19 @@
                         const rightFill = document.getElementById("fillRight1");
                         setTimeout(function () {
                             leftHalf.style.visibility = "visible";
-                            leftFill.style.animation = "fill ease-in-out 350ms";
-                        }, 350);
+                            leftFill.style.animation = "fill ease-in-out 450ms";
+                        }, 450);
                         rightHalf.style.visibility = "visible";
-                        rightFill.style.animation = "fill ease-in-out 350ms";
+                        rightFill.style.animation = "fill ease-in-out 450ms";
 
-                        setTimeout(function () {  //check if I've been looking continously for 700ms
-                            if (Date.now() - ins1 >= 700) {
+                        setTimeout(function () {  //check if I've been looking continously for 900ms
+                            if (Date.now() - ins1 >= 900) {
                                 leftHalf.style.visibility = "hidden";
                                 rightHalf.style.visibility = "hidden";
                                 rightFill.style.animation = null;
                                 leftFill.style.animation = null;
                                 card.classList.add("flipped");
-                               
+
 
                                 var alreadyFlipped = document.getElementsByClassName("flipped");
                                 if (alreadyFlipped.length == 2) {
@@ -447,11 +484,11 @@
                                             c2.classList.remove("inside");
                                             c1.classList.remove("flipped");
                                             c2.classList.remove("flipped");
-                                        }, 700);
+                                        }, 900);
                                     }
                                 }
                             }
-                        }, 700);
+                        }, 900);
                     }
 
                 }
@@ -466,7 +503,7 @@
                     document.getElementById("fillLeft1").style.animation = null;
                 }
 
-                if (x > 341 && x < 610 && y > 10 && y < 350 && (!(document.getElementById("2").classList.contains("selected"))) && (!(document.getElementById("2").classList.contains("flipped")))) {//inside area 2
+                if (x > 634 && x < 903 && y > 10 && y < 350 && (!(document.getElementById("2").classList.contains("selected"))) && (!(document.getElementById("2").classList.contains("flipped")))) {//inside area 2
                     const card = document.getElementById("2");
                     if (!(card.classList.contains("inside"))) {
                         card.classList.add("inside");
@@ -478,12 +515,12 @@
                         const rightFill = document.getElementById("fillRight2");
                         setTimeout(function () {
                             leftHalf.style.visibility = "visible";
-                            leftFill.style.animation = "fill ease-in-out 350ms";
-                        }, 350);
+                            leftFill.style.animation = "fill ease-in-out 450ms";
+                        }, 450);
                         rightHalf.style.visibility = "visible";
-                        rightFill.style.animation = "fill ease-in-out 350ms";
+                        rightFill.style.animation = "fill ease-in-out 450ms";
                         setTimeout(function () {
-                            if (Date.now() - ins2 >= 700) {
+                            if (Date.now() - ins2 >= 900) {
                                 leftHalf.style.visibility = "hidden";
                                 rightHalf.style.visibility = "hidden";
                                 rightFill.style.animation = null;
@@ -511,15 +548,15 @@
                                             c2.classList.remove("inside");
                                             c1.classList.remove("flipped");
                                             c2.classList.remove("flipped");
-                                        }, 700);
+                                        }, 900);
                                     }
                                 }
                             }
-                        }, 700);
+                        }, 900);
                     }
                 }
 
-                if (!(x > 341 && x < 610 && y > 10 && y < 350)) {//outside area 2
+                if (!(x > 634 && x < 903 && y > 10 && y < 350)) {//outside area 2
                     ins2 = Date.now();
                     const card = document.getElementById("2");
                     card.classList.remove("inside");
@@ -529,7 +566,7 @@
                     document.getElementById("fillLeft2").style.animation = null;
                 }
 
-                if (x > 661 && x < 931 && y > 10 && y < 350 && (!(document.getElementById("3").classList.contains("selected"))) && (!(document.getElementById("3").classList.contains("flipped")))) {//inside area 3
+                if (x > 1247 && x < 1516 && y > 10 && y < 350 && (!(document.getElementById("3").classList.contains("selected"))) && (!(document.getElementById("3").classList.contains("flipped")))) {//inside area 3
                     const card = document.getElementById("3");
                     if (!(card.classList.contains("inside"))) {
                         card.classList.add("inside");
@@ -541,13 +578,13 @@
                         const rightFill = document.getElementById("fillRight3");
                         setTimeout(function () {
                             leftHalf.style.visibility = "visible";
-                            leftFill.style.animation = "fill ease-in-out 350ms";
-                        }, 350);
+                            leftFill.style.animation = "fill ease-in-out 450ms";
+                        }, 450);
                         rightHalf.style.visibility = "visible";
-                        rightFill.style.animation = "fill ease-in-out 350ms";
+                        rightFill.style.animation = "fill ease-in-out 450ms";
 
-                        setTimeout(function () { //check I've been looking for 700 continous ms
-                            if (Date.now() - ins3 >= 700) {
+                        setTimeout(function () { //check I've been looking for 900 continous ms
+                            if (Date.now() - ins3 >= 900) {
                                 leftHalf.style.visibility = "hidden";
                                 rightHalf.style.visibility = "hidden";
                                 rightFill.style.animation = null;
@@ -576,15 +613,15 @@
                                             c2.classList.remove("inside");
                                             c1.classList.remove("flipped");
                                             c2.classList.remove("flipped");
-                                        }, 700);
+                                        }, 900);
                                     }
                                 }
                             }
-                        }, 700);
+                        }, 900);
                     }
                 }
 
-                if (!(x > 661 && x < 931 && y > 10 && y < 350)) {//outside area 3
+                if (!(x > 1247 && x < 1516 && y > 10 && y < 350)) {//outside area 3
                     ins3 = Date.now();
                     const card = document.getElementById("3");
                     card.classList.remove("inside");
@@ -607,12 +644,12 @@
                         const rightFill = document.getElementById("fillRight4");
                         setTimeout(function () {
                             leftHalf.style.visibility = "visible";
-                            leftFill.style.animation = "fill ease-in-out 350ms";
-                        }, 350);
+                            leftFill.style.animation = "fill ease-in-out 450ms";
+                        }, 450);
                         rightHalf.style.visibility = "visible";
-                        rightFill.style.animation = "fill ease-in-out 350ms";
-                        setTimeout(function () { //check I've been looking for continous 700ms
-                            if (Date.now() - ins4 >= 700) {
+                        rightFill.style.animation = "fill ease-in-out 450ms";
+                        setTimeout(function () { //check I've been looking for continous 900ms
+                            if (Date.now() - ins4 >= 900) {
                                 leftHalf.style.visibility = "hidden";
                                 rightHalf.style.visibility = "hidden";
                                 rightFill.style.animation = null;
@@ -642,11 +679,11 @@
                                             c2.classList.remove("inside");
                                             c1.classList.remove("flipped");
                                             c2.classList.remove("flipped");
-                                        }, 700);
+                                        }, 900);
                                     }
                                 }
                             }
-                        }, 700);
+                        }, 900);
                     }
                 }
 
@@ -661,7 +698,7 @@
                     document.getElementById("fillLeft4").style.animation = null;
                 }
 
-                if (x > 341 && x < 610 && y > 370 && y < 710 && (!(document.getElementById("5").classList.contains("flipped"))) && (!(document.getElementById("5").classList.contains("selected")))) { //inside 5
+                if (x > 634 && x < 903 && y > 370 && y < 710 && (!(document.getElementById("5").classList.contains("flipped"))) && (!(document.getElementById("5").classList.contains("selected")))) { //inside 5
                     const card = document.getElementById("5");
                     if (!(card.classList.contains("inside"))) {
                         card.classList.add("inside");
@@ -673,12 +710,12 @@
                         const rightFill = document.getElementById("fillRight5");
                         setTimeout(function () {
                             leftHalf.style.visibility = "visible";
-                            leftFill.style.animation = "fill ease-in-out 350ms";
-                        }, 350);
+                            leftFill.style.animation = "fill ease-in-out 450ms";
+                        }, 450);
                         rightHalf.style.visibility = "visible";
-                        rightFill.style.animation = "fill ease-in-out 350ms";
-                        setTimeout(function () { //check i've been looking for 700 ms continously
-                            if (Date.now() - ins5 >= 700) {
+                        rightFill.style.animation = "fill ease-in-out 450ms";
+                        setTimeout(function () { //check i've been looking for 900 ms continously
+                            if (Date.now() - ins5 >= 900) {
                                 leftHalf.style.visibility = "hidden";
                                 rightHalf.style.visibility = "hidden";
                                 rightFill.style.animation = null;
@@ -707,16 +744,16 @@
                                             c2.classList.remove("inside");
                                             c1.classList.remove("flipped");
                                             c2.classList.remove("flipped");
-                                        }, 700);
+                                        }, 900);
                                     }
                                 }
                             }
-                        }, 700);
+                        }, 900);
                     }
 
                 }
 
-                if (!(x > 341 && x < 610 && y > 370 && y < 710)) {//outside area 5
+                if (!(x > 634 && x < 903 && y > 370 && y < 710)) {//outside area 5
                     ins5 = Date.now();
                     const card = document.getElementById("5");
                     card.classList.remove("inside");
@@ -726,7 +763,7 @@
                     document.getElementById("fillLeft5").style.animation = null;
                 }
 
-                if (x > 661 && x < 931 && y > 370 && y < 710 && (!(document.getElementById("6").classList.contains("flipped"))) && (!(document.getElementById("6").classList.contains("selected")))) { //inside 6
+                if (x > 1247 && x < 1516 && y > 370 && y < 710 && (!(document.getElementById("6").classList.contains("flipped"))) && (!(document.getElementById("6").classList.contains("selected")))) { //inside 6
                     const card = document.getElementById("6");
                     if (!(card.classList.contains("inside"))) {
                         card.classList.add("inside");
@@ -738,12 +775,12 @@
                         const rightFill = document.getElementById("fillRight6");
                         setTimeout(function () {
                             leftHalf.style.visibility = "visible";
-                            leftFill.style.animation = "fill ease-in-out 350ms";
-                        }, 350);
+                            leftFill.style.animation = "fill ease-in-out 450ms";
+                        }, 450);
                         rightHalf.style.visibility = "visible";
-                        rightFill.style.animation = "fill ease-in-out 350ms";
-                        setTimeout(function () { //check i've been looking for 700 ms continously
-                            if (Date.now() - ins6 >= 700) {
+                        rightFill.style.animation = "fill ease-in-out 450ms";
+                        setTimeout(function () { //check i've been looking for 900 ms continously
+                            if (Date.now() - ins6 >= 900) {
                                 leftHalf.style.visibility = "hidden";
                                 rightHalf.style.visibility = "hidden";
                                 rightFill.style.animation = null;
@@ -772,16 +809,16 @@
                                             c2.classList.remove("inside");
                                             c1.classList.remove("flipped");
                                             c2.classList.remove("flipped");
-                                        }, 700);
+                                        }, 900);
                                     }
                                 }
                             }
-                        }, 700);
+                        }, 900);
                     }
 
                 }
 
-                if (!(x > 661 && x < 931 && y > 370 && y < 710)) {//outside area 6
+                if (!(x > 1247 && x < 1516 && y > 370 && y < 710)) {//outside area 6
                     ins6 = Date.now();
                     const card = document.getElementById("6");
                     card.classList.remove("inside");
@@ -799,10 +836,12 @@
                     if (timer == 0 && count < 3) {
                         document.getElementById("losePopup").classList.add("open-popup");
                         loseSound.play();
+                        
                     }
                     else {
                         document.getElementById("winPopup").classList.add("open-popup");
                         winSound.play();
+                        document.getElementById("time-bar").classList.remove("round-time-bar");
                     }
                 }
 

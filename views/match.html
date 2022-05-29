@@ -9,7 +9,7 @@
     <script src="https://api.gazerecorder.com/GazeCloudAPI.js"></script>
 
     <style>
-        img {
+        .shapeimg {
             border: 5px solid rgba(0, 0, 0, 0);
         }
 
@@ -91,13 +91,42 @@
                 transform: rotate(180deg);
             }
         }
+
+        .round-time-bar div {
+            height: 6px;
+            background: linear-gradient(to bottom, #fef300, #fff980);
+            animation: roundtime calc(var(--duration) * 1s) steps(var(--duration)) forwards;
+            /* animation: roundtime calc(var(--duration) * 1s) linear forwards; */
+            transform-origin: left center;
+        }
+
+        .round-time-bar[data-style="smooth"] div {
+            animation: roundtime calc(var(--duration) * 1s) linear forwards;
+        }
+
+        @keyframes roundtime {
+            to {
+                /* More performant than animating `width` */
+                transform: scaleX(0);
+            }
+        }
+
+        .start-bar {
+            height: 6px;
+            background: linear-gradient(to bottom, #fef300, #fff980);
+        }
     </style>
 
 </head>
 
 <body style="overflow-y:hidden; overflow-x:hidden; background: linear-gradient(90deg, #FDBB2D 0%, #22C1C3 100%);">
+
+    <div class="start-bar" data-style="smooth" style="--duration: 60;" id="time-bar">
+        <div></div>
+    </div>
+
     <div id="shape1">
-        <img id="1" src="cube.png" name="square"
+        <img id="1" src="cube.png" name="square" class="shapeimg"
             style="position: absolute; left: 20px; top: 10px; width: 270px; height: 340px;">
         <div class="circle-wrap" style="position: absolute; left:95px; top:120px;">
             <div class="circle">
@@ -112,10 +141,10 @@
     </div>
 
     <div id="shape2">
-        <img id="2" src="circle.png" name="circle"
-            style="position: absolute; left: 340px; top: 10px; width: 270px; height: 340px;;">
+        <img id="2" src="circle.png" name="circle" class="shapeimg"
+            style="position: absolute; left: 428px; top: 10px; width: 270px; height: 340px;;">
 
-        <div class="circle-wrap" style="position: absolute; left:415px; top:120px;">
+        <div class="circle-wrap" style="position: absolute; left:503px; top:120px;">
             <div class="circle">
                 <div class="mask full" id="leftHalf2" style="visibility: hidden;">
                     <div class="fill" id="fillLeft2"></div>
@@ -129,10 +158,10 @@
     </div>
 
     <div id="shape3">
-        <img id="3" src="domino.png" name="rec"
-            style="position: absolute; left: 660px; top: 10px; width: 270px; height: 340px;">
+        <img id="3" src="bus.png" name="rec" class="shapeimg"
+            style="position: absolute; left: 836px; top: 10px; width: 270px; height: 340px;">
 
-        <div class="circle-wrap" style="position: absolute; left:735px; top:120px;">
+        <div class="circle-wrap" style="position: absolute; left:911px; top:120px;">
             <div class="circle">
                 <div class="mask full" id="leftHalf3" style="visibility: hidden;">
                     <div class="fill" id="fillLeft3"></div>
@@ -146,10 +175,10 @@
     </div>
 
     <div id="shape4">
-        <img id="4" src="triangle.png" name="triangle"
-            style="position: absolute; left: 980px; top: 10px; width: 270px; height: 340px;">
+        <img id="4" src="triangle.png" name="triangle" class="shapeimg"
+            style="position: absolute; left: 1244px; top: 10px; width: 270px; height: 340px;">
 
-        <div class="circle-wrap" style="position: absolute; left:1055px; top:120px;">
+        <div class="circle-wrap" style="position: absolute; left:1319px; top:120px;">
             <div class="circle">
                 <div class="mask full" id="leftHalf4" style="visibility: hidden;">
                     <div class="fill" id="fillLeft4"></div>
@@ -164,7 +193,7 @@
 
 
     <div id="shape5">
-        <img id="5" src="globe.png" name="circle"
+        <img id="5" src="globe.png" name="circle" class="shapeimg" class="shapeimg"
             style="position: absolute; left: 20px; bottom: 10px; width: 270px; height: 340px;">
 
         <div class="circle-wrap" style="position: absolute; left:95px; bottom:120px;">
@@ -182,10 +211,10 @@
 
 
     <div id="shape6">
-        <img id="6" src="rectangle.png" name="rec"
-            style="position: absolute; left: 340px; bottom: 10px; width: 270px; height: 340px;">
+        <img id="6" src="rectangle.png" name="rec" class="shapeimg"
+            style="position: absolute; left: 428px; bottom: 10px; width: 270px; height: 340px;">
 
-        <div class="circle-wrap" style="position: absolute; left:415px; bottom:120px;">
+        <div class="circle-wrap" style="position: absolute; left:503px; bottom:120px;">
             <div class="circle">
                 <div class="mask full" id="leftHalf6" style="visibility: hidden;">
                     <div class="fill" id="fillLeft6"></div>
@@ -200,10 +229,10 @@
 
 
     <div id="shape7">
-        <img id="7" src="square.png" name="square"
-            style="position: absolute; left: 660px; bottom: 10px; width: 270px; height: 340px;">
+        <img id="7" src="square.png" name="square" class="shapeimg"
+            style="position: absolute; left: 836px; bottom: 10px; width: 270px; height: 340px;">
 
-        <div class="circle-wrap" style="position: absolute; left:735px; bottom:120px;">
+        <div class="circle-wrap" style="position: absolute; left:911px; bottom:120px;">
             <div class="circle">
                 <div class="mask full" id="leftHalf7" style="visibility: hidden;">
                     <div class="fill" id="fillLeft7"></div>
@@ -218,10 +247,10 @@
 
 
     <div id="shape8">
-        <img id="8" src="tree.png" name="triangle"
-            style="position: absolute; left: 980px; bottom: 10px; width: 270px; height: 340px;">
+        <img id="8" src="tree.png" name="triangle" class="shapeimg"
+            style="position: absolute; left: 1244px; bottom: 10px; width: 270px; height: 340px;">
 
-        <div class="circle-wrap" style="position: absolute; left:1055px; bottom:120px;">
+        <div class="circle-wrap" style="position: absolute; left:1319px; bottom:120px;">
             <div class="circle">
                 <div class="mask full" id="leftHalf8" style="visibility: hidden;">
                     <div class="fill" id="fillLeft8"></div>
@@ -233,8 +262,8 @@
         </div>
     </div>
 
-    <h1 style="position: absolute; left: 1310px; top: 30px; color: #fcbb2e; font-size: 2.3rem;">Time Left:</h1>
-    <h1 id="timer" style="position: absolute; left: 1375px; top: 80px; color: #fcbb2e; font-size: 2.3rem;">60</h1>
+    <!-- <h1 style="position: absolute; left: 1310px; top: 30px; color: #fcbb2e; font-size: 2.3rem;">Time Left:</h1>
+    <h1 id="timer" style="position: absolute; left: 1375px; top: 80px; color: #fcbb2e; font-size: 2.3rem;">60</h1> -->
 
     <div class="popup" id="losePopup">
         <h1 style="text-align: center; color: #000; top: -3vh; position: relative;">Time's Up &#x1F615;</h1>
@@ -307,10 +336,14 @@
             randomizeShapes();
             GazeCloudAPI.StartEyeTracking();
             GazeCloudAPI.OnCalibrationComplete = function () {
-                console.log('gaze Calibration Complete'); calibrated = true; start = true; countingInterval = setInterval(function () {
+                //start animation of the loading bar
+                document.getElementById("time-bar").classList.remove("start-bar");
+                document.getElementById("time-bar").classList.add("round-time-bar");
+                calibrated = true; start = true;
+                countingInterval = setInterval(function () {
                     if (timer > 0 && count < 4) {
                         timer--;
-                        document.getElementById("timer").innerText = timer + "";
+                        // document.getElementById("timer").innerText = timer + "";
                     }
                 }, 1000);
             }
@@ -383,7 +416,7 @@
                 }
 
 
-                if (x > 341 && x < 610 && y > 40 && y < 320 && (!(document.getElementById("2").classList.contains("inside"))) && (!(document.getElementById("2").classList.contains("selected"))) && (!(document.getElementById("2").classList.contains("chosen")))) {//inside area 2
+                if (x > 429 && x < 698 && y > 40 && y < 320 && (!(document.getElementById("2").classList.contains("inside"))) && (!(document.getElementById("2").classList.contains("selected"))) && (!(document.getElementById("2").classList.contains("chosen")))) {//inside area 2
                     const shape = document.getElementById("2");
                     shape.classList.add("inside");
                     sh2 = Date.now();
@@ -411,7 +444,7 @@
                     }, 700);
                 }
 
-                if (!(x > 341 && x < 610 && y > 40 && y < 320)) { //outside area 2
+                if (!(x > 429 && x < 698  && y > 40 && y < 320)) { //outside area 2
                     sh2 = Date.now();
                     document.getElementById("2").classList.remove("inside");
                     document.getElementById("leftHalf2").style.visibility = "hidden";
@@ -420,7 +453,7 @@
                     document.getElementById("fillLeft2").style.animation = null;
                 }
 
-                if (x > 661 && x < 931 && y > 40 && y < 320 && (!(document.getElementById("3").classList.contains("inside"))) && (!(document.getElementById("3").classList.contains("selected"))) && (!(document.getElementById("3").classList.contains("chosen")))) {//inside area 3
+                if (x > 837 && x < 1106 && y > 40 && y < 320 && (!(document.getElementById("3").classList.contains("inside"))) && (!(document.getElementById("3").classList.contains("selected"))) && (!(document.getElementById("3").classList.contains("chosen")))) {//inside area 3
                     const shape = document.getElementById("3");
                     shape.classList.add("inside");
                     sh3 = Date.now();
@@ -448,7 +481,7 @@
                     }, 700);
                 }
 
-                if (!(x > 661 && x < 931 && y > 40 && y < 320)) { //outside area 3
+                if (!(x > 837 && x < 1106 && y > 40 && y < 320)) { //outside area 3
                     sh3 = Date.now();
                     document.getElementById("3").classList.remove("inside");
                     document.getElementById("leftHalf3").style.visibility = "hidden";
@@ -458,7 +491,7 @@
                 }
 
 
-                if (x > 981 && x < 1250 && y > 40 && y < 320 && (!(document.getElementById("4").classList.contains("inside"))) && (!(document.getElementById("4").classList.contains("selected"))) && (!(document.getElementById("4").classList.contains("chosen")))) {//inside area 4
+                if (x > 1245 && x < 1514 && y > 40 && y < 320 && (!(document.getElementById("4").classList.contains("inside"))) && (!(document.getElementById("4").classList.contains("selected"))) && (!(document.getElementById("4").classList.contains("chosen")))) {//inside area 4
                     const shape = document.getElementById("4");
                     shape.classList.add("inside");
                     sh4 = Date.now();
@@ -486,7 +519,7 @@
                     }, 700);
                 }
 
-                if (!(x > 981 && x < 1250 && y > 40 && y < 320)) { //outside area 4
+                if (!(x > 1245 && x < 1514 && y > 40 && y < 320)) { //outside area 4
                     sh4 = Date.now();
                     document.getElementById("4").classList.remove("inside");
                     document.getElementById("leftHalf4").style.visibility = "hidden";
@@ -533,7 +566,7 @@
                 }
 
 
-                if (x > 341 && x < 610 && y > 400 && y < 680 && (!(document.getElementById("6").classList.contains("inside"))) && (!(document.getElementById("6").classList.contains("selected"))) && (!(document.getElementById("6").classList.contains("chosen")))) {//inside area 6
+                if (x > 429 && x < 698  && y > 400 && y < 680 && (!(document.getElementById("6").classList.contains("inside"))) && (!(document.getElementById("6").classList.contains("selected"))) && (!(document.getElementById("6").classList.contains("chosen")))) {//inside area 6
                     const shape = document.getElementById("6");
                     shape.classList.add("inside");
                     sh6 = Date.now();
@@ -561,7 +594,7 @@
                     }, 700);
                 }
 
-                if (!(x > 341 && x < 610 && y > 400 && y < 680)) { //outside area 6
+                if (!(x > 429 && x < 698  && y > 400 && y < 680)) { //outside area 6
                     sh6 = Date.now();
                     document.getElementById("6").classList.remove("inside");
                     document.getElementById("leftHalf6").style.visibility = "hidden";
@@ -570,7 +603,7 @@
                     document.getElementById("fillLeft6").style.animation = null;
                 }
 
-                if (x > 661 && x < 931 && y > 400 && y < 680 && (!(document.getElementById("7").classList.contains("inside"))) && (!(document.getElementById("7").classList.contains("selected"))) && (!(document.getElementById("7").classList.contains("chosen")))) {//inside area 7
+                if (x > 837 && x < 1106 && y > 400 && y < 680 && (!(document.getElementById("7").classList.contains("inside"))) && (!(document.getElementById("7").classList.contains("selected"))) && (!(document.getElementById("7").classList.contains("chosen")))) {//inside area 7
                     const shape = document.getElementById("7");
                     shape.classList.add("inside");
                     sh7 = Date.now();
@@ -598,7 +631,7 @@
                     }, 700);
                 }
 
-                if (!(x > 661 && x < 931 && y > 400 && y < 680)) { //outside area 7
+                if (!(x > 837 && x < 1106 && y > 400 && y < 680)) { //outside area 7
                     sh7 = Date.now();
                     document.getElementById("7").classList.remove("inside");
                     document.getElementById("leftHalf7").style.visibility = "hidden";
@@ -607,7 +640,7 @@
                     document.getElementById("fillLeft7").style.animation = null;
                 }
 
-                if (x > 981 && x < 1250 && y > 400 && y < 680 && (!(document.getElementById("8").classList.contains("inside"))) && (!(document.getElementById("8").classList.contains("selected"))) && (!(document.getElementById("8").classList.contains("chosen")))) {//inside area 8
+                if (x > 1245 && x < 1514 && y > 400 && y < 680 && (!(document.getElementById("8").classList.contains("inside"))) && (!(document.getElementById("8").classList.contains("selected"))) && (!(document.getElementById("8").classList.contains("chosen")))) {//inside area 8
                     const shape = document.getElementById("8");
                     shape.classList.add("inside");
                     sh8 = Date.now();
@@ -635,7 +668,7 @@
                     }, 700);
                 }
 
-                if (!(x > 981 && x < 1250 && y > 400 && y < 680)) { //outside area 8
+                if (!(x > 1245 && x < 1514 && y > 400 && y < 680)) { //outside area 8
                     sh8 = Date.now();
                     document.getElementById("8").classList.remove("inside");
                     document.getElementById("leftHalf8").style.visibility = "hidden";
@@ -656,6 +689,7 @@
                     else {
                         document.getElementById("winPopup").classList.add("open-popup");
                         winSound.play();
+                        document.getElementById("time-bar").classList.remove("round-time-bar");
                     }
                 }
             }//start
@@ -714,7 +748,7 @@
                     }
                     else {
                         if (chosenShapes[i].localeCompare("rectangle") === 0) {
-                            chosenFigures.push({ image: "domino.png", name: "rectangle" });
+                            chosenFigures.push({ image: "bus.png", name: "rectangle" });
                         }
                         else {
                             if (chosenShapes[i].localeCompare("triangle") === 0) {
