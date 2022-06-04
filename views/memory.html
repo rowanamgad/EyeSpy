@@ -59,7 +59,7 @@
         .popup {
             position: absolute;
             width: 600px;
-            height: 200px;
+            height: 250px;
             /* background: #fac6f6; */
             background: #ffffff;
             left: 27vw;
@@ -323,14 +323,19 @@
 
         <form method="GET" action="home">
             <input type="submit" value="Exit"
-                style="position: absolute; top: 13vh; left: 3vw; width: 150px; height: 50px; font-size: 1.5rem; background: red; font-weight: 700; " />
+                style="position: absolute; top: 17vh; left: 3vw; width: 150px; height: 50px; font-size: 1.5rem; background: red; font-weight: 700; " />
         </form>
-        <p style="text-align: center; position: relative; top:9vh; color: #000; ">Use your mouse cursor instead of your
+
+        <p id="loseMes"
+            style="text-align: center; position: relative; top:-3vh; color: #000; font-weight: bold; font-size: large;">
+            Your Current Highscore Is 60 Seconds</p>
+
+        <p style="text-align: center; position: relative; top:8vh; color: #000; ">Use your mouse cursor instead of your
             eye cursor to click on the buttons</p>
 
         <form method="GET" action="memory">
             <input type="submit" value="Try Again!"
-                style="position: absolute; top: 13vh; left: 26vw; width: 150px; height: 50px; font-size: 1.5rem; background: #0BDA51; font-weight: 700;" />
+                style="position: absolute; top: 17vh; left: 26vw; width: 150px; height: 50px; font-size: 1.5rem; background: #0BDA51; font-weight: 700;" />
         </form>
 
 
@@ -342,14 +347,19 @@
 
         <form method="GET" action="home">
             <input type="submit" value="Exit"
-                style="position: absolute; top: 13vh; left: 3vw; width: 150px; height: 50px; font-size: 1.5rem; background: red; font-weight: 700; " />
+                style="position: absolute; top: 19vh; left: 3vw; width: 150px; height: 50px; font-size: 1.5rem; background: red; font-weight: 700; " />
         </form>
-        <p style="text-align: center; position: relative; top:9vh; color: #000; ">Use your mouse cursor instead of your
+
+        <p id="winMes"
+            style="text-align: center; position: relative; top:-3.5vh; color: #000; font-weight: bold; font-size: large;">
+            Your Current Highscore Is 60 Seconds</p>
+
+        <p style="text-align: center; position: relative; top:7vh; color: #000; ">Use your mouse cursor instead of your
             eye cursor to click on the buttons</p>
 
         <form method="GET" action="memory">
             <input type="submit" value="Play Again!"
-                style="position: absolute; top: 13vh; left: 26vw; width: 150px; height: 50px; font-size: 1.5rem; background: #0BDA51; font-weight: 700;" />
+                style="position: absolute; top: 19vh; left: 26vw; width: 150px; height: 50px; font-size: 1.5rem; background: #0BDA51; font-weight: 700;" />
         </form>
 
 
@@ -385,10 +395,6 @@
 
 
         window.addEventListener("load", function () {
-            console.log(window.screen.width);
-            console.log(window.screen.availHeight);
-            var rect = document.getElementById("card5").getBoundingClientRect();
-            console.log(rect.top, rect.right, rect.bottom, rect.left);
             randomizeCards();
             GazeCloudAPI.StartEyeTracking();
             GazeCloudAPI.OnCalibrationComplete = function () {
@@ -834,11 +840,35 @@
                     start = false;
                     document.getElementById("gaze").style.visibility = "hidden";
                     if (timer == 0 && count < 3) {
+                        if (window.localStorage.getItem('memoryscore') === null) {
+                            document.getElementById("loseMes").innerText = "Try again and achieve a high score now!";
+                        }
+                        else {
+                            document.getElementById("loseMes").innerText = "Your Current High Score Is " + window.localStorage.getItem('memoryscore') + " Seconds";
+                        }
                         document.getElementById("losePopup").classList.add("open-popup");
                         loseSound.play();
-                        
+
                     }
                     else {
+                        const score = window.localStorage.getItem('memoryscore');
+                        if (score === null) {
+                            document.getElementById("winMes").innerText = "Your Current High Score Is " + (60 - timer) + " Seconds";
+                            window.localStorage.setItem('memoryscore', ((60 - timer) + ""));
+                        }
+                        else {
+                            const newScore = 60 - timer;
+                            const old = parseInt(score);
+                            if (newScore < old) {
+                                document.getElementById("winMes").innerText = "You Achieved A New High Score Of " + newScore + " Seconds!!";
+                                window.localStorage.setItem('memoryscore', (newScore + ""));
+                            }
+                            else {
+                                document.getElementById("winMes").innerText = "You Finished in " + newScore + " Seconds. " + "\nHigh Score:  " + score + " Seconds.";
+
+                            }
+
+                        }
                         document.getElementById("winPopup").classList.add("open-popup");
                         winSound.play();
                         document.getElementById("time-bar").classList.remove("round-time-bar");

@@ -28,7 +28,7 @@
         .popup {
             position: absolute;
             width: 600px;
-            height: 200px;
+            height: 250px;
             /* background: #fac6f6; */
             background: #ffffff;
             left: 27vw;
@@ -270,14 +270,18 @@
 
         <form method="GET" action="home">
             <input type="submit" value="Exit"
-                style="position: absolute; top: 13vh; left: 3vw; width: 150px; height: 50px; font-size: 1.5rem; background: red; font-weight: 700; " />
+                style="position: absolute; top: 17vh; left: 3vw; width: 150px; height: 50px; font-size: 1.5rem; background: red; font-weight: 700; " />
         </form>
-        <p style="text-align: center; position: relative; top:9vh; color: #000; ">Use your mouse cursor instead of your
+        <p id="loseMes"
+            style="text-align: center; position: relative; top:-3vh; color: #000; font-weight: bold; font-size: large;">
+            Your Current Highscore Is 60 Seconds</p>
+
+        <p style="text-align: center; position: relative; top:8vh; color: #000; ">Use your mouse cursor instead of your
             eye cursor to click on the buttons</p>
 
         <form method="GET" action="match">
             <input type="submit" value="Try Again!"
-                style="position: absolute; top: 13vh; left: 26vw; width: 150px; height: 50px; font-size: 1.5rem; background: #0BDA51; font-weight: 700;" />
+                style="position: absolute; top: 17vh; left: 26vw; width: 150px; height: 50px; font-size: 1.5rem; background: #0BDA51; font-weight: 700;" />
         </form>
 
 
@@ -289,14 +293,19 @@
 
         <form method="GET" action="home">
             <input type="submit" value="Exit"
-                style="position: absolute; top: 13vh; left: 3vw; width: 150px; height: 50px; font-size: 1.5rem; background: red; font-weight: 700; " />
+                style="position: absolute; top: 19vh; left: 3vw; width: 150px; height: 50px; font-size: 1.5rem; background: red; font-weight: 700; " />
         </form>
-        <p style="text-align: center; position: relative; top:9vh; color: #000; ">Use your mouse cursor instead of your
+
+        <p id="winMes"
+            style="text-align: center; position: relative; top:-3.5vh; color: #000; font-weight: bold; font-size: large;">
+            Your Current Highscore Is 60 Seconds</p>
+
+        <p style="text-align: center; position: relative; top:7vh; color: #000; ">Use your mouse cursor instead of your
             eye cursor to click on the buttons</p>
 
         <form method="GET" action="match">
             <input type="submit" value="Play Again!"
-                style="position: absolute; top: 13vh; left: 26vw; width: 150px; height: 50px; font-size: 1.5rem; background: #0BDA51; font-weight: 700;" />
+                style="position: absolute; top: 19vh; left: 26vw; width: 150px; height: 50px; font-size: 1.5rem; background: #0BDA51; font-weight: 700;" />
         </form>
 
 
@@ -444,7 +453,7 @@
                     }, 700);
                 }
 
-                if (!(x > 429 && x < 698  && y > 40 && y < 320)) { //outside area 2
+                if (!(x > 429 && x < 698 && y > 40 && y < 320)) { //outside area 2
                     sh2 = Date.now();
                     document.getElementById("2").classList.remove("inside");
                     document.getElementById("leftHalf2").style.visibility = "hidden";
@@ -566,7 +575,7 @@
                 }
 
 
-                if (x > 429 && x < 698  && y > 400 && y < 680 && (!(document.getElementById("6").classList.contains("inside"))) && (!(document.getElementById("6").classList.contains("selected"))) && (!(document.getElementById("6").classList.contains("chosen")))) {//inside area 6
+                if (x > 429 && x < 698 && y > 400 && y < 680 && (!(document.getElementById("6").classList.contains("inside"))) && (!(document.getElementById("6").classList.contains("selected"))) && (!(document.getElementById("6").classList.contains("chosen")))) {//inside area 6
                     const shape = document.getElementById("6");
                     shape.classList.add("inside");
                     sh6 = Date.now();
@@ -594,7 +603,7 @@
                     }, 700);
                 }
 
-                if (!(x > 429 && x < 698  && y > 400 && y < 680)) { //outside area 6
+                if (!(x > 429 && x < 698 && y > 400 && y < 680)) { //outside area 6
                     sh6 = Date.now();
                     document.getElementById("6").classList.remove("inside");
                     document.getElementById("leftHalf6").style.visibility = "hidden";
@@ -683,10 +692,34 @@
                     start = false;
                     document.getElementById("gaze").style.visibility = "hidden";
                     if (timer == 0 && count < 4) {
+                        if (window.localStorage.getItem('matchscore') === null) {
+                            document.getElementById("loseMes").innerText = "Try again and achieve a high score now!";
+                        }
+                        else {
+                            document.getElementById("loseMes").innerText = "Your Current High Score Is " + window.localStorage.getItem('matchscore') + " Seconds";
+                        }
                         document.getElementById("losePopup").classList.add("open-popup");
                         loseSound.play();
                     }
                     else {
+                        const score = window.localStorage.getItem('matchscore');
+                        if (score === null) {
+                            document.getElementById("winMes").innerText = "Your Current High Score Is " + (60 - timer) + " Seconds";
+                            window.localStorage.setItem('matchscore', ((60 - timer) + ""));
+                        }
+                        else {
+                            const newScore = 60 - timer;
+                            const old = parseInt(score);
+                            if (newScore < old) {
+                                document.getElementById("winMes").innerText = "You Achieved A New High Score Of " + newScore + " Seconds!!";
+                                window.localStorage.setItem('matchscore', (newScore + ""));
+                            }
+                            else {
+                                document.getElementById("winMes").innerText = "You Finished in " + newScore + " Seconds. " + "\nHigh Score:  " + score + " Seconds.";
+
+                            }
+
+                        }
                         document.getElementById("winPopup").classList.add("open-popup");
                         winSound.play();
                         document.getElementById("time-bar").classList.remove("round-time-bar");
